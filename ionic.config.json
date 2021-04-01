@@ -1,0 +1,7 @@
+{
+  "name": "te-impulsa",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
