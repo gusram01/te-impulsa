@@ -1,6 +1,8 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import App from './App.vue';
 import router from './router';
+
+import Layout from './components/Layout.vue';
 
 import { IonicVue } from '@ionic/vue';
 
@@ -26,7 +28,9 @@ import './theme/variables.css';
 const app = createApp(App)
   .use(IonicVue)
   .use(router);
-  
+
+app.component('app-layout', Layout);
+
 router.isReady().then(() => {
   app.mount('#app');
 });
