@@ -1,18 +1,16 @@
 <template>
   <ion-page>
-    <ion-header>
-      <ion-toolbar color="primary">
-        <ion-buttons slot="start">
-          <ion-button>
-            <ion-menu-button auto-hide="false"></ion-menu-button>
+    <ion-header class="ion-no-border">
+      <ion-toolbar>
+        <div class="wrapper">
+          <ion-button fill="clear">
+            <ion-menu-button auto-hide="false" color="dark"></ion-menu-button>
           </ion-button>
-        </ion-buttons>
-        <ion-title>
-          <div class="container">
-            <h1>{{ pageTitle }}</h1>
-            <h2>{{ today }}</h2>
-          </div>
-        </ion-title>
+
+          <ion-title size="large">
+            {{ pageTitle }}
+          </ion-title>
+        </div>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -24,7 +22,7 @@
 <script>
 import {
   IonPage,
-  IonButtons,
+  // IonButtons,
   IonButton,
   IonMenuButton,
   IonHeader,
@@ -37,7 +35,7 @@ import { menuOutline } from 'ionicons/icons';
 export default {
   components: {
     IonPage,
-    IonButtons,
+    // IonButtons,
     IonButton,
     IonMenuButton,
     IonHeader,
@@ -55,3 +53,18 @@ export default {
   },
 };
 </script>
+<style>
+.wrapper {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  padding: 1em 0;
+  border-radius: 0 0 20px 20px;
+  background-color: var(--ion-color-primary);
+}
+.wrapper::after {
+  content: '';
+  width: 100%;
+  height: 15%;
+}
+</style>

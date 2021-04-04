@@ -2,7 +2,7 @@
   <ion-menu side="start" menu-id="mainMenu" content-id="main">
     <ion-header>
       <ion-toolbar color="primary">
-        <ion-title>TE IMPULSAMOS.CL</ion-title>
+        <ion-img :src="bgImage" alt="background image menu"></ion-img>
       </ion-toolbar>
     </ion-header>
 
@@ -36,7 +36,7 @@ import {
   IonMenu,
   IonHeader,
   IonToolbar,
-  IonTitle,
+  IonImg,
   IonContent,
   IonList,
   IonItem,
@@ -45,13 +45,14 @@ import {
   IonAvatar,
 } from '@ionic/vue';
 import { pulseOutline, calendarOutline, timerOutline } from 'ionicons/icons';
+import bgImage from '@/assets/teimpulsamos.png';
 
 export default {
   components: {
     IonMenu,
     IonHeader,
     IonToolbar,
-    IonTitle,
+    IonImg,
     IonContent,
     IonList,
     IonItem,
@@ -62,6 +63,7 @@ export default {
 
   data() {
     return {
+      bgImage,
       pulseOutline,
       calendarOutline,
       timerOutline,
