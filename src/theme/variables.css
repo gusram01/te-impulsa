@@ -3,6 +3,8 @@ http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
 :root {
+  --toolbar-height: 135;
+
   /** primary **/
   --ion-color-primary: #fbe122;
   --ion-color-primary-rgb: 251, 225, 34;

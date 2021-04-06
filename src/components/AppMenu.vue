@@ -1,12 +1,20 @@
 <template>
-  <ion-menu side="start" menu-id="mainMenu" content-id="main">
+  <ion-menu
+    backdrop
+    side="start"
+    menu-id="mainMenu"
+    content-id="main"
+    class="main-menu"
+  >
     <ion-header>
       <ion-toolbar color="primary">
-        <ion-img :src="bgImage" alt="background image menu"></ion-img>
+        <div class="image-header__container">
+          <ion-img :src="bgImage" alt="background image menu"></ion-img>
+        </div>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content>
+    <ion-content class="my-ion-content">
       <ion-list>
         <ion-item>
           <ion-avatar>
@@ -75,5 +83,12 @@ export default {
 <style scoped>
 ion-icon {
   color: var(--ion-color-primary-shade);
+}
+
+.image-header__container {
+  height: calc(var(--toolbar-height) * 1px);
+}
+ion-img {
+  max-width: 160px;
 }
 </style>

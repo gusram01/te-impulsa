@@ -1,9 +1,9 @@
 <template>
   <ion-page>
-    <ion-header class="ion-no-border">
+    <ion-header class="ion-no-border" :translucent="true">
       <ion-toolbar>
         <div class="wrapper">
-          <ion-button fill="clear">
+          <ion-button fill="clear" :strong="true">
             <ion-menu-button auto-hide="false" color="dark"></ion-menu-button>
           </ion-button>
 
@@ -53,18 +53,30 @@ export default {
   },
 };
 </script>
-<style>
-.wrapper {
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  padding: 1em 0;
+<style scoped>
+ion-toolbar {
   border-radius: 0 0 20px 20px;
-  background-color: var(--ion-color-primary);
 }
-.wrapper::after {
-  content: '';
+.wrapper {
+  position: relative;
   width: 100%;
-  height: 15%;
+  height: calc((var(--toolbar-height) * 1px));
+  padding: 0 0 1em 0;
+  background-color: var(--ion-color-primary);
+  border-radius: 0 0 20px 20px;
+}
+.wrapper::before {
+  content: '';
+  position: absolute;
+  top: -37%;
+  right: -7.5%;
+  width: 45%;
+  height: 100%;
+  border-radius: 45% 0 45% 50%;
+  background: rgba(0, 0, 0, 0.13);
+}
+.wrapper > ion-button {
+  --padding-end: 0.2em;
+  --padding-start: 0.2em;
 }
 </style>
