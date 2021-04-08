@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-header class="ion-no-border" :translucent="true">
+    <ion-header class="ion-no-border">
       <ion-toolbar>
         <div class="wrapper">
           <ion-button fill="clear" :strong="true">
@@ -10,6 +10,12 @@
           <ion-title size="large">
             {{ pageTitle }}
           </ion-title>
+          <div class="subtitle">
+            mar 27, 2021
+          </div>
+          <ion-button color="dark" size="small" class="add">
+            Create service
+          </ion-button>
         </div>
       </ion-toolbar>
     </ion-header>
@@ -54,9 +60,13 @@ export default {
 };
 </script>
 <style scoped>
+ion-header {
+  background: var(--ion-color-step-800);
+}
 ion-toolbar {
   border-radius: 0 0 20px 20px;
 }
+
 .wrapper {
   position: relative;
   width: 100%;
@@ -75,8 +85,12 @@ ion-toolbar {
   border-radius: 45% 0 45% 50%;
   background: rgba(0, 0, 0, 0.13);
 }
-.wrapper > ion-button {
+ion-button:not(.add) {
   --padding-end: 0.2em;
   --padding-start: 0.2em;
+}
+.add,
+.subtitle {
+  margin-left: 5%;
 }
 </style>

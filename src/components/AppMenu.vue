@@ -24,12 +24,6 @@
         </ion-item>
         <ion-item>
           <ion-avatar>
-            <ion-icon :icon="calendarOutline" size="large"></ion-icon>
-          </ion-avatar>
-          <ion-label>Calendar</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-avatar>
             <ion-icon :icon="timerOutline" size="large"></ion-icon>
           </ion-avatar>
           <ion-label>History</ion-label>
@@ -52,8 +46,8 @@ import {
   IonLabel,
   IonAvatar,
 } from '@ionic/vue';
-import { pulseOutline, calendarOutline, timerOutline } from 'ionicons/icons';
-import bgImage from '@/assets/teimpulsamos.png';
+import { pulseOutline, timerOutline } from 'ionicons/icons';
+import bgImage from '@/assets/logo.png';
 
 export default {
   components: {
@@ -73,7 +67,6 @@ export default {
     return {
       bgImage,
       pulseOutline,
-      calendarOutline,
       timerOutline,
     };
   },
