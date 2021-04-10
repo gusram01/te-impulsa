@@ -1,12 +1,18 @@
 <template>
-  <app-layout pageTitle="Welcome Rafy">
-    <div class="content__wrapper">
-      <div class="date-wrapper">
-        <ion-button size="large" @click="openDatepicker">
-          <ion-icon :icon="calendar"></ion-icon>
-        </ion-button>
-        <!-- <ion-datetime value="2021-03-21" v-show="showDatetime" ref="myPicker" /> -->
+  <app-layout>
+    <template v-slot:toolbar>
+      <ion-title size="large">
+        Welcome Rafy
+      </ion-title>
+      <div class="subtitle">
+        mar 27, 2021
       </div>
+      <ion-button color="dark" size="small" class="add-service">
+        Create service
+      </ion-button>
+    </template>
+
+    <div class="content__wrapper">
       <ion-list lines="none" :inset="false">
         <ion-item-group v-for="(date, index) in datedServices" :key="index">
           <ion-datetime :readonly="true" :value="date[0].service_date" />
@@ -35,18 +41,20 @@
                   <small>
                     {{ item.comuna }}
                   </small>
-                  <strong>
-                    <em> Hora: {{ item.sched_hour }} hrs. </em>
-                  </strong>
+                  <p>
+                    <strong>
+                      <em> Hora: {{ item.sched_hour }} hrs. </em>
+                    </strong>
+                  </p>
                 </ion-note>
 
                 <div class="buttons-items-wrapper" slot="end">
-                  <ion-button shape="round" class="" size="small">
-                    <ion-icon :icon="logoUsd" size="small"></ion-icon>
-                  </ion-button>
                   <ion-button shape="round" class="message" size="small">
                     <ion-icon :icon="sendOutline" size="small"></ion-icon>
                     &nbsp;Message
+                  </ion-button>
+                  <ion-button shape="round" class="" size="small">
+                    <ion-icon :icon="logoUsd" size="small"></ion-icon>
                   </ion-button>
                 </div>
               </ion-item>
@@ -81,6 +89,7 @@ import {
   IonItemDivider,
   IonButton,
   IonItemSliding,
+  IonTitle,
 } from '@ionic/vue';
 import {
   people,
@@ -108,6 +117,7 @@ export default {
     IonItemDivider,
     IonButton,
     IonItemSliding,
+    IonTitle,
   },
   data() {
     return {
@@ -118,7 +128,6 @@ export default {
       trashOutline,
       calendar,
       logoUsd,
-      showDatetime: false,
       datedServices: {},
       calendarData: {},
     };
@@ -131,11 +140,6 @@ export default {
   },
 
   methods: {
-    openDatepicker() {
-      this.showDatetime = true;
-      console.dir(this.$refs.myPicker);
-      // this.$refs.myPicker.open();
-    },
     convertServices(items) {
       console.log(items);
       items.forEach((item) => {
@@ -166,14 +170,14 @@ ion-button.message {
 }
 ion-list {
   padding-top: 0;
-  background: var(--ion-color-step-800);
+  background: #e7e7e7;
 }
 ion-item-divider {
   --padding-start: 0.8em;
   --padding-end: 0.8em;
   --padding-top: 0.4em;
   --padding-bottom: 0.4em;
-  --background: var(--ion-color-step-800);
+  --background: #e7e7e7;
 }
 ion-item {
   --padding-top: 0.5em;
@@ -187,13 +191,20 @@ ion-item-group > ion-datetime {
   color: var(--ion-color-dark);
   opacity: 1;
 }
+
+.add-service,
+.subtitle {
+  margin-left: 5vw;
+}
+
 .content__wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background: var(--ion-color-step-800);
+  background: #e7e7e7;
 }
+
 .add__wrapper {
   display: flex;
   width: 100%;
@@ -207,12 +218,14 @@ ion-item-group > ion-datetime {
   text-align: center;
 }
 .buttons-items-wrapper {
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  text-align: right;
 }
 .buttons-items-wrapper > ion-button {
   margin-top: 12%;
   margin-bottom: auto;
+  font-size: 0.6em;
 }
 
 ion-label.data-name {

@@ -6,16 +6,7 @@
           <ion-button fill="clear" :strong="true">
             <ion-menu-button auto-hide="false" color="dark"></ion-menu-button>
           </ion-button>
-
-          <ion-title size="large">
-            {{ pageTitle }}
-          </ion-title>
-          <div class="subtitle">
-            mar 27, 2021
-          </div>
-          <ion-button color="dark" size="small" class="add">
-            Create service
-          </ion-button>
+          <slot name="toolbar"></slot>
         </div>
       </ion-toolbar>
     </ion-header>
@@ -28,12 +19,10 @@
 <script>
 import {
   IonPage,
-  // IonButtons,
   IonButton,
   IonMenuButton,
   IonHeader,
   IonToolbar,
-  IonTitle,
   IonContent,
 } from '@ionic/vue';
 import { menuOutline } from 'ionicons/icons';
@@ -41,15 +30,12 @@ import { menuOutline } from 'ionicons/icons';
 export default {
   components: {
     IonPage,
-    // IonButtons,
     IonButton,
     IonMenuButton,
     IonHeader,
     IonToolbar,
-    IonTitle,
     IonContent,
   },
-  props: ['pageTitle'],
 
   data() {
     return {
@@ -61,7 +47,7 @@ export default {
 </script>
 <style scoped>
 ion-header {
-  background: var(--ion-color-step-800);
+  background: #e7e7e7;
 }
 ion-toolbar {
   border-radius: 0 0 20px 20px;
@@ -88,9 +74,5 @@ ion-toolbar {
 ion-button:not(.add) {
   --padding-end: 0.2em;
   --padding-start: 0.2em;
-}
-.add,
-.subtitle {
-  margin-left: 5%;
 }
 </style>
