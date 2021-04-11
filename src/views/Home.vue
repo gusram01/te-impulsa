@@ -37,14 +37,18 @@
                 </ion-text>
 
                 <ion-note>
-                  {{ item.user_direction }}
-                  <small>
-                    {{ item.comuna }}
-                  </small>
+                  <ion-text color="dark">
+                    {{ item.user_direction }}
+                    <small>
+                      {{ item.comuna }}
+                    </small>
+                  </ion-text>
                   <p>
-                    <strong>
-                      <em> Hora: {{ item.sched_hour }} hrs. </em>
-                    </strong>
+                    <ion-text color="dark">
+                      <strong>
+                        <em> Hora: {{ item.sched_hour }} hrs. </em>
+                      </strong>
+                    </ion-text>
                   </p>
                 </ion-note>
 
@@ -161,7 +165,6 @@ ion-button.add {
   --padding-bottom: 50%;
   --padding-top: 50%;
   --border-radius: 50%;
-  /* --box-shadow: 0 0 4px rgba(0, 0, 0, 0.15); */
 }
 
 ion-button.message {
@@ -170,14 +173,14 @@ ion-button.message {
 }
 ion-list {
   padding-top: 0;
-  background: #e7e7e7;
+  background: var(--ion-color-step-900);
 }
 ion-item-divider {
   --padding-start: 0.8em;
   --padding-end: 0.8em;
   --padding-top: 0.4em;
   --padding-bottom: 0.4em;
-  --background: #e7e7e7;
+  --background: var(--ion-color-step-900);
 }
 ion-item {
   --padding-top: 0.5em;
@@ -188,7 +191,7 @@ ion-item-group:not(:first-child) {
   margin-top: 5%;
 }
 ion-item-group > ion-datetime {
-  color: var(--ion-color-dark);
+  color: var(--ion-color-tertiary);
   opacity: 1;
 }
 
@@ -202,7 +205,7 @@ ion-item-group > ion-datetime {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background: #e7e7e7;
+  background: var(--ion-color-step-900);
 }
 
 .add__wrapper {
