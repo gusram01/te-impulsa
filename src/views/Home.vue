@@ -7,7 +7,12 @@
       <div class="subtitle">
         mar 27, 2021
       </div>
-      <ion-button color="dark" size="small" class="add-service">
+      <ion-button
+        color="dark"
+        size="small"
+        class="add-service"
+        @click="openModal"
+      >
         Create service
       </ion-button>
     </template>
@@ -19,10 +24,10 @@
           <ion-item-divider v-for="item in date" :key="item.order_code">
             <ion-item-sliding>
               <ion-item-options side="start">
-                <ion-item-option color="danger">
-                  <ion-icon :icon="trashOutline" size="large"></ion-icon>
+                <ion-item-option color="secondary">
+                  <ion-icon :icon="checkmarkCircle" size="large"></ion-icon>
                   <ion-label>
-                    Eliminar
+                    Finish Service
                   </ion-label>
                 </ion-item-option>
               </ion-item-options>
@@ -62,11 +67,12 @@
                   </ion-button>
                 </div>
               </ion-item>
+
               <ion-item-options side="end">
-                <ion-item-option color="secondary">
-                  <ion-icon :icon="createOutline" size="large"></ion-icon>
+                <ion-item-option color="danger">
+                  <ion-icon :icon="trashOutline" size="large"></ion-icon>
                   <ion-label>
-                    Editar
+                    Eliminar
                   </ion-label>
                 </ion-item-option>
               </ion-item-options>
@@ -94,17 +100,21 @@ import {
   IonButton,
   IonItemSliding,
   IonTitle,
+  modalController,
 } from '@ionic/vue';
 import {
   people,
   add,
   trashOutline,
-  createOutline,
+  checkmarkCircle,
   sendOutline,
   calendar,
   logoUsd,
 } from 'ionicons/icons';
+
 import { getInfo } from '../services/api';
+
+import ModalForm from '../components/ModalForm.vue';
 
 export default {
   components: {
@@ -128,12 +138,13 @@ export default {
       sendOutline,
       people,
       add,
-      createOutline,
+      checkmarkCircle,
       trashOutline,
       calendar,
       logoUsd,
       datedServices: {},
       calendarData: {},
+      modal: null,
     };
   },
 
@@ -145,7 +156,6 @@ export default {
 
   methods: {
     convertServices(items) {
-      console.log(items);
       items.forEach((item) => {
         const dateToProcess = item.service_date.split('T')[0];
 
@@ -155,6 +165,24 @@ export default {
           this.datedServices[dateToProcess].push(item);
         }
       });
+    },
+
+    async openModal() {
+      this.modal = await modalController.create({
+        component: ModalForm,
+        cssClass: 'modal',
+        componentProps: {
+          title: 'Create Service',
+          close: () => this.closeModal(),
+        },
+        backdropDismiss: true,
+        showBackdrop: true,
+      });
+      this.modal.present();
+    },
+
+    closeModal() {
+      this.modal.dismiss();
     },
   },
 };
@@ -226,9 +254,11 @@ ion-item-group > ion-datetime {
   height: 100%;
 }
 .buttons-items-wrapper > ion-button {
-  margin-top: 12%;
+  margin-top: 5%;
   margin-bottom: auto;
   font-size: 0.6em;
+  --padding-top: 2em;
+  --padding-bottom: 2em;
 }
 
 ion-label.data-name {
