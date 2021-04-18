@@ -2,12 +2,6 @@
   <ion-header translucent>
     <ion-toolbar>
       <ion-title>{{ title }}</ion-title>
-      <!-- <ion-buttons slot="end">
-        <ion-button @click="closeModal">
-          <ion-icon :icon="closeOutline"></ion-icon>
-          close
-        </ion-button>
-      </ion-buttons> -->
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
@@ -78,12 +72,12 @@
         <ion-row>
           <ion-col> </ion-col>
           <ion-col>
-            <ion-button type="cancel" @click="closeModal" color="light">
+            <ion-button type="cancel" @click="close" color="light">
               Cancel
             </ion-button>
           </ion-col>
           <ion-col>
-            <ion-button type="submit" @click="openToast" color="tertiary">
+            <ion-button type="submit" @click="validationForm" color="tertiary">
               Save
             </ion-button>
           </ion-col>
@@ -94,6 +88,7 @@
 </template>
 
 <script>
+import { DateTime } from 'luxon';
 import {
   IonGrid,
   IonCol,
@@ -219,11 +214,17 @@ export default {
   },
 
   methods: {
-    closeModal() {
-      this.close();
+    async showSuccessToast() {
+      this.toast = await toastController.create({
+        message: 'The service was saved',
+        position: 'bottom',
+        duration: 2000,
+        color: 'success',
+      });
+      this.toast.present();
     },
 
-    async openToast() {
+    async validationForm() {
       if (!Object.keys(this.errorInput).length) {
         this.submitForm();
         return;
@@ -237,19 +238,35 @@ export default {
       this.toast.present();
     },
 
+    clearForm() {
+      this.name = '';
+      this.last_name = '';
+      this.phone = null;
+      this.date_service = null;
+      this.address = '';
+      this.department = null;
+      this.comuna = null;
+      this.errorInput = {};
+    },
     submitForm() {
       const service = {
         name: this.name,
-        lastName: this.lastName,
+        last_name: this.lastName,
         phone: this.phone,
-        date_service: this.date_service,
+        date_service: DateTime.fromISO(this.date_service).toFormat(
+          'yyyy-LL-dd HH:mm:ss'
+        ),
         address: this.address,
         department: this.department,
         comuna: this.comuna,
         token_business: '841f80d3-7f4c-11eb-b629-f603cfed5859',
       };
 
-      newService(service);
+      newService(service).then(() => {
+        this.clearForm();
+        this.showSuccessToast();
+        this.close();
+      });
     },
   },
   components: {

@@ -14,6 +14,10 @@ const routes = [
     path: '/dates',
     component: () => import('../views/Dates.vue'),
   },
+  {
+    path: '/service/:id',
+    component: () => import('../views/ServiceDetail.vue'),
+  },
 ];
 
 const router = createRouter({

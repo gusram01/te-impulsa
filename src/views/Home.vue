@@ -32,7 +32,7 @@
                 </ion-item-option>
               </ion-item-options>
 
-              <ion-item lines="none">
+              <ion-item lines="none" @click="goToDetail(item.order_code)">
                 <ion-label position="stacked" class="data-name">
                   {{ item.first_name }}
                 </ion-label>
@@ -155,6 +155,10 @@ export default {
   },
 
   methods: {
+    goToDetail(id) {
+      this.$router.push(`/service/${id}`);
+    },
+
     convertServices(items) {
       items.forEach((item) => {
         const dateToProcess = item.service_date.split('T')[0];

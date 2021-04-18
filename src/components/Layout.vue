@@ -25,7 +25,6 @@ import {
   IonToolbar,
   IonContent,
 } from '@ionic/vue';
-import { menuOutline } from 'ionicons/icons';
 
 export default {
   components: {
@@ -35,13 +34,6 @@ export default {
     IonHeader,
     IonToolbar,
     IonContent,
-  },
-
-  data() {
-    return {
-      menuOutline,
-      today: new Date().toLocaleString(),
-    };
   },
 };
 </script>
