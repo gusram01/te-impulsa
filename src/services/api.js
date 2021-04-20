@@ -37,6 +37,30 @@ export const getServiceById = (orderCode) => {
       return [];
     });
 };
+
+export const getPendingByDate = (day, month, year) => {
+  const params = new URLSearchParams();
+
+  params.append('day', day);
+  params.append('month', month);
+  params.append('year', year);
+  params.append('token_business', token_business);
+
+  return axios
+    .post(`${url}/getPedingServicesByDate`, params)
+    .then((resp) => {
+      console.log(resp);
+      if (!resp.data.success) {
+        throw new Error('Empty data');
+      }
+      return resp.data.data;
+    })
+    .catch((err) => {
+      console.error(err);
+      return [];
+    });
+};
+
 export const newService = (service) => {
   const params = new URLSearchParams();
 
