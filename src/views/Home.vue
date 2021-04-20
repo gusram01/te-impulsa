@@ -32,7 +32,7 @@
                 </ion-item-option>
               </ion-item-options>
 
-              <ion-item lines="none" @click="goToDetail(item.order_code)">
+              <ion-item lines="none" @click.self="goToDetail(item.order_code)">
                 <ion-label position="stacked" class="data-name">
                   {{ item.first_name }}
                 </ion-label>
@@ -268,5 +268,10 @@ ion-item-group > ion-datetime {
 ion-label.data-name {
   font-size: 1.5em;
   margin-bottom: 0.5em;
+}
+ion-text,
+ion-label,
+ion-note {
+  pointer-events: none;
 }
 </style>

@@ -13,7 +13,14 @@
       <ion-list lines="none">
         <ion-item-divider>
           <ion-item>
-            <h4>Order: {{ $route.params.id }}</h4>
+            <h4 slot="start">Order: {{ $route.params.id }}</h4>
+            <ion-button
+              :color="isDisabled ? 'tertiary' : 'dark'"
+              size="default"
+              @click="isDisabled = !isDisabled"
+            >
+              {{ isDisabled ? 'Edit' : 'Save' }}
+            </ion-button>
           </ion-item>
         </ion-item-divider>
         <ion-item>
@@ -22,6 +29,9 @@
             type="text"
             placeholder="First Name"
             clear-input
+            :disabled="isDisabled"
+            :class="{ disabled: isDisabled }"
+            :value="name"
             @IonInput="name = $event.target.value"
           ></ion-input>
         </ion-item>
@@ -31,6 +41,9 @@
             type="text"
             placeholder="Last Name"
             clear-input
+            :disabled="isDisabled"
+            :class="{ disabled: isDisabled }"
+            :value="lastName"
             @IonInput="lastName = $event.target.value"
           ></ion-input>
         </ion-item>
@@ -40,6 +53,9 @@
             type="number"
             placeholder="Telephone"
             clear-input
+            :disabled="isDisabled"
+            :class="{ disabled: isDisabled }"
+            :value="phone"
             @IonInput="phone = $event.target.value"
           ></ion-input>
         </ion-item>
@@ -47,6 +63,9 @@
           <ion-label>Date</ion-label>
           <ion-datetime
             display-format="MM/DD/YYYY"
+            :disabled="isDisabled"
+            :class="{ disabled: isDisabled }"
+            value="04/23/2021"
             @IonChange="date_service = $event.target.value"
           ></ion-datetime>
         </ion-item>
@@ -56,6 +75,9 @@
             type="text"
             placeholder="Direction"
             clear-input
+            :disabled="isDisabled"
+            :class="{ disabled: isDisabled }"
+            :value="address"
             @IonInput="address = $event.target.value"
           ></ion-input>
         </ion-item>
@@ -65,6 +87,9 @@
             type="number"
             placeholder="Department"
             clear-input
+            :disabled="isDisabled"
+            :class="{ disabled: isDisabled }"
+            :value="department"
             @IonInput="department = $event.target.value"
           ></ion-input>
         </ion-item>
@@ -74,25 +99,12 @@
             type="number"
             placeholder="Comuna"
             clear-input
+            :disabled="isDisabled"
+            :class="{ disabled: isDisabled }"
+            :value="comuna"
             @IonInput="comuna = $event.target.value"
           ></ion-input>
         </ion-item>
-
-        <!-- <ion-grid>
-          <ion-row>
-            <ion-col> </ion-col>
-            <ion-col>
-              <ion-button type="cancel" @click="closeModal" color="light">
-                Cancel
-              </ion-button>
-            </ion-col>
-            <ion-col>
-              <ion-button type="submit" @click="openToast" color="tertiary">
-                Save
-              </ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-grid> -->
       </ion-list>
     </ion-content>
   </ion-page>
@@ -103,6 +115,7 @@ import {
   IonPage,
   IonBackButton,
   IonButtons,
+  IonButton,
   IonHeader,
   IonToolbar,
   IonContent,
@@ -120,6 +133,7 @@ export default {
     IonPage,
     IonBackButton,
     IonButtons,
+    IonButton,
     IonHeader,
     IonToolbar,
     IonContent,
@@ -137,14 +151,15 @@ export default {
 
   data() {
     return {
+      isDisabled: true,
       content: 'Content',
-      name: '',
-      lastName: '',
-      phone: '',
-      date_service: null,
-      address: '',
-      department: '',
-      comuna: '',
+      name: 'Alejandro',
+      lastName: 'Sánchez',
+      phone: '12356454',
+      date_service: '12/23/2021',
+      address: 'calle dos 531',
+      department: '834',
+      comuna: '1',
       errorInput: {},
     };
   },
@@ -157,7 +172,26 @@ ion-header {
 ion-toolbar {
   border-radius: 0 0 20px 20px;
 }
+ion-label {
+  min-width: 6em;
+}
+ion-input,
+ion-datetime {
+  --background: white;
+  --padding-top: 0.8em;
+  --padding-bottom: 0.8em;
+  --padding-start: 1.5em;
+  --padding-end: 1.5em;
+  width: 100%;
+  margin: 0.5em;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
+  border-radius: 10px;
+}
 
+.disabled {
+  color: var(--ion-color-step-50);
+  box-shadow: none;
+}
 .wrapper {
   --toolbar-height: 60;
   position: relative;
@@ -176,24 +210,5 @@ ion-toolbar {
   height: 100%;
   border-radius: 45% 0 45% 50%;
   background: rgba(0, 0, 0, 0.13);
-}
-ion-button:not(.add) {
-  --padding-end: 0.2em;
-  --padding-start: 0.2em;
-}
-ion-label {
-  min-width: 6em;
-}
-ion-input,
-ion-datetime {
-  --background: white;
-  --padding-top: 0.8em;
-  --padding-bottom: 0.8em;
-  --padding-start: 1.5em;
-  --padding-end: 1.5em;
-  width: 100%;
-  margin: 0.5em;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
-  border-radius: 10px;
 }
 </style>
