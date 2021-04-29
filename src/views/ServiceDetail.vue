@@ -146,22 +146,54 @@ export default {
   },
 
   created() {
-    getServiceById(this.$route.params.id);
+    getServiceById(this.$route.params.id)
+      .then(this.setInitialData)
+      .catch(() => {
+        this.name = '';
+        this.lastName = '';
+        this.phone = '';
+        this.date_service = '';
+        this.address = '';
+        this.department = '';
+        this.comuna = '';
+      });
   },
 
   data() {
     return {
       isDisabled: true,
-      content: 'Content',
-      name: 'Alejandro',
-      lastName: 'Sánchez',
-      phone: '12356454',
-      date_service: '12/23/2021',
-      address: 'calle dos 531',
-      department: '834',
-      comuna: '1',
+      content: '',
+      name: '',
+      lastName: '',
+      phone: '',
+      date_service: '',
+      address: '',
+      department: '',
+      comuna: '',
       errorInput: {},
     };
+  },
+
+  methods: {
+    setInitialData(items) {
+      const {
+        comuna,
+        first_name,
+        last_name,
+        service_date,
+        telephone,
+        user_depto,
+        user_direction,
+      } = items[0];
+
+      this.name = first_name;
+      this.lastName = last_name;
+      this.phone = telephone;
+      this.date_service = service_date;
+      this.address = user_direction;
+      this.department = user_depto;
+      this.comuna = comuna;
+    },
   },
 };
 </script>

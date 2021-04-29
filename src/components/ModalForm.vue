@@ -52,7 +52,7 @@
       <ion-item>
         <ion-label>Department</ion-label>
         <ion-input
-          type="number"
+          type="text"
           placeholder="Department"
           clear-input
           @IonInput="department = $event.target.value"
@@ -136,7 +136,7 @@ export default {
       this.errorInput.address = 'address';
     }
 
-    if (this.department <= 0 || isNaN(+this.department)) {
+    if (!this.department.length) {
       this.errorInput.department = 'department';
     }
 
@@ -198,7 +198,7 @@ export default {
       }
     },
     department(val) {
-      if (!val || isNaN(+val)) {
+      if (!val) {
         this.errorInput.department = 'department';
       } else {
         delete this.errorInput.department;
@@ -244,7 +244,7 @@ export default {
       this.phone = null;
       this.date_service = null;
       this.address = '';
-      this.department = null;
+      this.department = '';
       this.comuna = null;
       this.errorInput = {};
     },

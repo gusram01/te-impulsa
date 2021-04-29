@@ -17,6 +17,14 @@
       </ion-button>
     </template>
 
+    <ion-refresher slot="fixed" @ionRefresh="refreshServices($event)">
+      <ion-refresher-content
+        :pulling-icon="chevronDownCircleOutline"
+        pulling-text="Pull to refresh"
+        refreshing-spinner="circles"
+      >
+      </ion-refresher-content>
+    </ion-refresher>
     <div class="content__wrapper">
       <ion-list lines="none" :inset="false">
         <ion-item-group v-for="(date, index) in datedServices" :key="index">
@@ -100,6 +108,8 @@ import {
   IonButton,
   IonItemSliding,
   IonTitle,
+  IonRefresher,
+  IonRefresherContent,
   modalController,
 } from '@ionic/vue';
 import {
@@ -110,6 +120,7 @@ import {
   sendOutline,
   calendar,
   logoUsd,
+  chevronDownCircleOutline,
 } from 'ionicons/icons';
 
 import { getInfo } from '../services/api';
@@ -132,6 +143,8 @@ export default {
     IonButton,
     IonItemSliding,
     IonTitle,
+    IonRefresher,
+    IonRefresherContent,
   },
   data() {
     return {
@@ -142,6 +155,7 @@ export default {
       trashOutline,
       calendar,
       logoUsd,
+      chevronDownCircleOutline,
       datedServices: {},
       calendarData: {},
       modal: null,
@@ -187,6 +201,17 @@ export default {
 
     closeModal() {
       this.modal.dismiss();
+    },
+
+    refreshServices(event) {
+      this.datedServices = {};
+
+      getInfo()
+        .then(this.convertServices)
+        .catch(() => {})
+        .finally(() => {
+          event.target.complete();
+        });
     },
   },
 };

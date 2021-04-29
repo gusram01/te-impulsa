@@ -24,9 +24,8 @@ export const getServiceById = (orderCode) => {
   params.append('order_code', orderCode);
 
   return axios
-    .get(`${url}/serviceDetail`, params)
+    .post(`${url}/serviceDetail`, params)
     .then((resp) => {
-      console.log(resp);
       if (!resp.data.success) {
         throw new Error('Empty data');
       }
