@@ -32,7 +32,10 @@
           <ion-item-divider v-for="item in date" :key="item.order_code">
             <ion-item-sliding>
               <ion-item-options side="start">
-                <ion-item-option color="secondary">
+                <ion-item-option
+                  color="secondary"
+                  @click="finishService(item.order_code)"
+                >
                   <ion-icon :icon="checkmarkCircle" size="large"></ion-icon>
                   <ion-label>
                     Finish Service
@@ -77,7 +80,10 @@
               </ion-item>
 
               <ion-item-options side="end">
-                <ion-item-option color="danger">
+                <ion-item-option
+                  color="danger"
+                  @click="deleteService(item.order_code)"
+                >
                   <ion-icon :icon="trashOutline" size="large"></ion-icon>
                   <ion-label>
                     Eliminar
@@ -123,7 +129,7 @@ import {
   chevronDownCircleOutline,
 } from 'ionicons/icons';
 
-import { getInfo } from '../services/api';
+import { getInfo, finishServiceById, deleteServiceById } from '../services/api';
 
 import ModalForm from '../components/ModalForm.vue';
 
@@ -171,6 +177,34 @@ export default {
   methods: {
     goToDetail(id) {
       this.$router.push(`/service/${id}`);
+    },
+
+    finishService(orderCode) {
+      finishServiceById(orderCode)
+        .then((response) => {
+          if (response) {
+            this.datedServices = {};
+            return getInfo(orderCode);
+          }
+        })
+        .then(this.convertServices)
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+
+    deleteService(orderCode) {
+      deleteServiceById(orderCode)
+        .then((response) => {
+          if (response) {
+            this.datedServices = {};
+            return getInfo(orderCode);
+          }
+        })
+        .then(this.convertServices)
+        .catch((err) => {
+          console.error(err);
+        });
     },
 
     convertServices(items) {

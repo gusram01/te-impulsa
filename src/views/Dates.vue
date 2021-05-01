@@ -15,9 +15,6 @@
             </ion-button>
           </ion-col>
         </ion-row>
-        <!-- <ion-row v-for="(serv, index) in datedServices" :key="index">
-          <ion-col>{{ serv }}</ion-col>
-        </ion-row> -->
         <ion-row>
           <div class="content__wrapper col-12">
             <ion-list lines="none" :inset="false">
@@ -28,18 +25,6 @@
                   :key="index"
                 >
                   <ion-item-sliding>
-                    <ion-item-options side="start">
-                      <ion-item-option color="secondary">
-                        <ion-icon
-                          :icon="checkmarkCircle"
-                          size="large"
-                        ></ion-icon>
-                        <ion-label>
-                          Finish Service
-                        </ion-label>
-                      </ion-item-option>
-                    </ion-item-options>
-
                     <ion-item
                       lines="none"
                       @click.self="goToDetail(datedService.order_code)"
@@ -82,7 +67,10 @@
                     </ion-item>
 
                     <ion-item-options side="end">
-                      <ion-item-option color="danger">
+                      <ion-item-option
+                        color="danger"
+                        @click="deleteService(datedService.order_code)"
+                      >
                         <ion-icon :icon="trashOutline" size="large"></ion-icon>
                         <ion-label>
                           Eliminar
@@ -109,7 +97,6 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  // IonText,
   IonList,
   IonItem,
   IonItemGroup,
@@ -128,7 +115,8 @@ import {
   logoUsd,
   trashOutline,
 } from 'ionicons/icons';
-import { getPendingByDate } from '../services/api';
+import { getPendingByDate, deleteServiceById } from '../services/api';
+
 const DatePicker = Plugins.DatePickerPlugin;
 
 export default {
@@ -139,7 +127,6 @@ export default {
     IonGrid,
     IonRow,
     IonCol,
-    // IonText,
     IonList,
     IonItem,
     IonItemGroup,
@@ -204,14 +191,31 @@ export default {
             this.date = date.value;
             this.isLoadingDatePicker = false;
           })
-          .catch((err) => {
-            console.log(JSON.stringify(err));
+          .catch(() => {
             this.isLoadingDatePicker = false;
           })
           .finally(() => {
             this.isLoadingDatePicker = false;
           });
       }
+    },
+
+    deleteService(orderCode) {
+      deleteServiceById(orderCode)
+        .then((response) => {
+          if (response) {
+            this.datedServices = [];
+            const arrDate = this.date.split('/');
+
+            return getPendingByDate(arrDate[0], arrDate[1], arrDate[2]);
+          }
+        })
+        .then((resp) => {
+          this.datedServices = resp;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
 
     goToDetail(id) {

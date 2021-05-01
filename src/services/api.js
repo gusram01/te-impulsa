@@ -37,6 +37,46 @@ export const getServiceById = (orderCode) => {
     });
 };
 
+export const finishServiceById = (orderCode) => {
+  const params = new URLSearchParams();
+
+  params.append('order_code', orderCode);
+
+  return axios
+    .post(`${url}/finishService`, params)
+    .then((resp) => {
+      console.error(JSON.stringify(resp.data));
+      if (!resp.data.success) {
+        throw new Error('Empty data');
+      }
+      return resp.data.success;
+    })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
+};
+
+export const deleteServiceById = (orderCode) => {
+  const params = new URLSearchParams();
+
+  params.append('order_code', orderCode);
+
+  return axios
+    .post(`${url}/deleteService`, params)
+    .then((resp) => {
+      console.error(JSON.stringify(resp.data));
+      if (!resp.data.success) {
+        throw new Error('Empty data');
+      }
+      return resp.data.success;
+    })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
+};
+
 export const getPendingByDate = (day, month, year) => {
   const params = new URLSearchParams();
 
