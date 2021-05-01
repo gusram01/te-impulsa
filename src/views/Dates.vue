@@ -129,7 +129,6 @@ import {
   trashOutline,
 } from 'ionicons/icons';
 import { getPendingByDate } from '../services/api';
-
 const DatePicker = Plugins.DatePickerPlugin;
 
 export default {
@@ -161,18 +160,27 @@ export default {
       sendOutline,
       logoUsd,
       trashOutline,
-      DatePicker,
       date: '',
       datedServices: [],
+      isLoadingDatePicker: false,
     };
   },
 
-  mounted() {
-    this.openDatepicker();
+  updated() {
+    if (this.$route.path === '/dates') {
+      this.date = '';
+      this.datedServices = [];
+      if (!this.isLoadingDatePicker) {
+        this.openDatepicker();
+      }
+    }
   },
 
   watch: {
     date(val) {
+      if (!val || !val.length) {
+        return;
+      }
       const arrDate = val.split('/');
 
       getPendingByDate(arrDate[0], arrDate[1], arrDate[2]).then((resp) => {
@@ -182,16 +190,28 @@ export default {
   },
 
   methods: {
-    openDatepicker() {
-      this.DatePicker.present({
-        mode: 'date',
-        locale: 'es_CL',
-        format: 'dd/MM/yyyy',
-        date: new Date().toLocaleString('es'),
-        theme: this.selectedTheme,
-      }).then((date) => {
-        this.date = date.value;
-      });
+    async openDatepicker() {
+      if ((await Plugins.Device.getInfo()).platform === 'android') {
+        this.isLoadingDatePicker = true;
+        DatePicker.present({
+          mode: 'date',
+          locale: 'es_CL',
+          format: 'dd/MM/yyyy',
+          date: new Date().toLocaleString('es'),
+          theme: this.selectedTheme,
+        })
+          .then((date) => {
+            this.date = date.value;
+            this.isLoadingDatePicker = false;
+          })
+          .catch((err) => {
+            console.log(JSON.stringify(err));
+            this.isLoadingDatePicker = false;
+          })
+          .finally(() => {
+            this.isLoadingDatePicker = false;
+          });
+      }
     },
 
     goToDetail(id) {

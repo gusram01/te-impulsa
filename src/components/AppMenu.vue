@@ -23,27 +23,21 @@
             </ion-avatar>
             <ion-label>Home</ion-label>
           </ion-item>
-        </ion-menu-toggle>
 
-        <ion-menu-toggle>
           <ion-item router-link="/dates" @click="close">
             <ion-avatar>
               <ion-icon :icon="calendar" size="large"></ion-icon>
             </ion-avatar>
             <ion-label>Calendar</ion-label>
           </ion-item>
-        </ion-menu-toggle>
 
-        <ion-menu-toggle>
           <ion-item>
             <ion-avatar>
               <ion-icon :icon="pulseOutline" size="large"></ion-icon>
             </ion-avatar>
             <ion-label>Activities</ion-label>
           </ion-item>
-        </ion-menu-toggle>
 
-        <ion-menu-toggle>
           <ion-item>
             <ion-avatar>
               <ion-icon :icon="timerOutline" size="large"></ion-icon>

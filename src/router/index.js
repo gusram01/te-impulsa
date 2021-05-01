@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import Home from '../views/Home.vue';
+import Dates from '../views/Dates.vue';
 
 const routes = [
   {
-    path: '/',
+    path: '',
     redirect: '/home',
   },
   {
@@ -12,7 +13,7 @@ const routes = [
   },
   {
     path: '/dates',
-    component: () => import('../views/Dates.vue'),
+    component: Dates,
   },
   {
     path: '/service/:id',

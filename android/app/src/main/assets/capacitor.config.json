@@ -11,7 +11,6 @@
     "DatePickerPlugin": {
       "mode": "date",
       "locale": "es_CL",
-      "current": "30/04/2021",
       "format": "dd/MM/yyyy"
     }
   },
