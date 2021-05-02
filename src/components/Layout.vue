@@ -24,6 +24,7 @@ import {
   IonHeader,
   IonToolbar,
   IonContent,
+  IonTitle,
 } from '@ionic/vue';
 
 export default {
@@ -34,6 +35,8 @@ export default {
     IonHeader,
     IonToolbar,
     IonContent,
+    // eslint-disable-next-line vue/no-unused-components
+    IonTitle,
   },
 };
 </script>

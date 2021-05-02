@@ -16,29 +16,33 @@
         Create service
       </ion-button>
     </template>
+    <template v-slot:default>
+      <ion-refresher slot="fixed" @ionRefresh="refreshServices($event)">
+        <ion-refresher-content
+          :pulling-icon="chevronDownCircleOutline"
+          pulling-text="Pull to refresh"
+          refreshing-spinner="circles"
+        >
+        </ion-refresher-content>
+      </ion-refresher>
 
-    <ion-refresher slot="fixed" @ionRefresh="refreshServices($event)">
-      <ion-refresher-content
-        :pulling-icon="chevronDownCircleOutline"
-        pulling-text="Pull to refresh"
-        refreshing-spinner="circles"
-      >
-      </ion-refresher-content>
-    </ion-refresher>
-
-    <div class="content__wrapper">
-      <ion-list lines="none" :inset="false">
-        <ion-item-group v-for="(services, index) in datedServices" :key="index">
-          <ion-datetime :readonly="true" :value="services[0].service_date" />
-          <app-services
-            :services="services"
-            :deleteService="deleteService"
-            :finishService="finishService"
+      <div class="content__wrapper">
+        <ion-list lines="none" :inset="false">
+          <ion-item-group
+            v-for="(services, index) in datedServices"
+            :key="index"
           >
-          </app-services>
-        </ion-item-group>
-      </ion-list>
-    </div>
+            <ion-datetime :readonly="true" :value="services[0].service_date" />
+            <app-services
+              :services="services"
+              :deleteService="deleteService"
+              :finishService="finishService"
+            >
+            </app-services>
+          </ion-item-group>
+        </ion-list>
+      </div>
+    </template>
   </app-layout>
 </template>
 
@@ -112,8 +116,8 @@ export default {
       }
     },
 
-    convertServices(items) {
-      items.forEach((item) => {
+    convertServices(resp) {
+      resp.data.forEach((item) => {
         const dateToProcess = item.service_date.split('T')[0];
 
         if (!this.datedServices[dateToProcess]) {

@@ -45,7 +45,7 @@
             class="message"
             size="small"
             :disabled="!isValidPhoneNumber(item.telephone)"
-            :href="`https://api.whatsapp.com/send?phone=+${item.telephone}`"
+            :href="`https://api.whatsapp.com/send?phone=+5215${item.telephone}`"
           >
             <ion-icon :icon="sendOutline" size="small"></ion-icon>
             &nbsp;Message
@@ -55,7 +55,7 @@
             size="small"
             :disabled="!isValidPhoneNumber(item.telephone)"
             :href="
-              `https://wa.me/1${item.telephone}?text=https://teimpulsamos.cl/api/v1/payment/payService`
+              `https://wa.me/5215${item.telephone}?text=https://teimpulsamos.cl/api/v1/payment/payService`
             "
           >
             <ion-icon :icon="logoUsd" size="small"></ion-icon>
@@ -140,7 +140,7 @@ export default {
       this.$router.push(`/service/${id}`);
     },
     isValidPhoneNumber(phone) {
-      return phone && phone.length === 10;
+      return phone && ('' + phone).length === 9;
     },
   },
 };

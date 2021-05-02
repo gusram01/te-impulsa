@@ -84,7 +84,7 @@
         <ion-item>
           <ion-label>Department</ion-label>
           <ion-input
-            type="number"
+            type="text"
             placeholder="Department"
             clear-input
             :disabled="isDisabled"

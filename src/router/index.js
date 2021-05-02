@@ -17,6 +17,11 @@ const routes = [
     meta: { canShowFinishButton: false },
   },
   {
+    path: '/history',
+    component: () => import('../views/History.vue'),
+    meta: { canShowFinishButton: false },
+  },
+  {
     path: '/service/:id',
     component: () => import('../views/ServiceDetail.vue'),
   },

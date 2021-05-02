@@ -24,11 +24,18 @@
             <ion-label>Home</ion-label>
           </ion-item>
 
-          <ion-item router-link="/dates" @click="close">
+          <ion-item router-link="/dates">
             <ion-avatar>
               <ion-icon :icon="calendar" size="large"></ion-icon>
             </ion-avatar>
             <ion-label>Calendar</ion-label>
+          </ion-item>
+
+          <ion-item router-link="/history">
+            <ion-avatar>
+              <ion-icon :icon="timerOutline" size="large"></ion-icon>
+            </ion-avatar>
+            <ion-label>History</ion-label>
           </ion-item>
 
           <ion-item>
@@ -36,13 +43,6 @@
               <ion-icon :icon="pulseOutline" size="large"></ion-icon>
             </ion-avatar>
             <ion-label>Activities</ion-label>
-          </ion-item>
-
-          <ion-item>
-            <ion-avatar>
-              <ion-icon :icon="timerOutline" size="large"></ion-icon>
-            </ion-avatar>
-            <ion-label>History</ion-label>
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
@@ -53,16 +53,16 @@
 <script>
 import {
   IonMenu,
-  IonHeader,
-  IonToolbar,
-  IonImg,
   IonContent,
   IonList,
+  IonMenuToggle,
   IonItem,
-  IonIcon,
   IonLabel,
   IonAvatar,
-  IonMenuToggle,
+  IonIcon,
+  IonImg,
+  IonHeader,
+  IonToolbar,
 } from '@ionic/vue';
 import { pulseOutline, timerOutline, calendar, home } from 'ionicons/icons';
 import bgImage from '@/assets/logo.png';
@@ -90,12 +90,6 @@ export default {
       calendar,
       home,
     };
-  },
-
-  methods: {
-    close() {
-      this.IonMenu.close().then();
-    },
   },
 };
 </script>

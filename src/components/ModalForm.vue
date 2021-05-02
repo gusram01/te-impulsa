@@ -32,6 +32,15 @@
           clear-input
           @IonInput="phone = $event.target.value"
         ></ion-input>
+        <div
+          v-if="
+            errorInput.phone &&
+              errorInput.phone.value &&
+              errorInput.phone.touched
+          "
+        >
+          <ion-text color="danger">{{ errorInput.phone.value }} </ion-text>
+        </div>
       </ion-item>
       <ion-item>
         <ion-label>Date</ion-label>
@@ -102,6 +111,7 @@ import {
   IonLabel,
   IonItem,
   IonList,
+  IonText,
   IonDatetime,
   toastController,
 } from '@ionic/vue';
@@ -117,31 +127,31 @@ export default {
 
   mounted() {
     if (!this.name.length) {
-      this.errorInput.name = 'name';
+      this.errorInput.name.value = 'First name is required';
     }
 
     if (!this.lastName.length) {
-      this.errorInput.lastName = 'lastName';
+      this.errorInput.lastName.value = 'Last name is required';
     }
 
     if (this.phone <= 0 || isNaN(+this.phone)) {
-      this.errorInput.phone = 'phone';
+      this.errorInput.phone.value = '9 characters Phone is required';
     }
 
     if (!this.date_service?.length) {
-      this.errorInput.date_service = 'date_service';
+      this.errorInput.date_service.value = 'Please pick a date';
     }
 
     if (!this.address.length) {
-      this.errorInput.address = 'address';
+      this.errorInput.address.value = 'Address is required';
     }
 
     if (!this.department.length) {
-      this.errorInput.department = 'department';
+      this.errorInput.department.value = 'Department is required';
     }
 
     if (this.comuna <= 0 || isNaN(+this.comuna)) {
-      this.errorInput.comuna = 'comuna';
+      this.errorInput.comuna.value = 'Comuna is required';
     }
   },
 
@@ -157,58 +167,87 @@ export default {
       address: '',
       department: '',
       comuna: '',
-      errorInput: {},
+      errorInput: {
+        name: {},
+        lastName: {},
+        phone: {},
+        date_service: {},
+        address: {},
+        department: {},
+        comuna: {},
+      },
     };
   },
 
   watch: {
     name(val) {
       if (!val) {
-        this.errorInput.name = 'name';
+        this.errorInput.name.value = 'First name is required';
+        if (!this.errorInput.name.touched) {
+          this.errorInput.name.touched = true;
+        }
       } else {
-        delete this.errorInput.name;
+        delete this.errorInput.name.value;
       }
     },
     lastName(val) {
       if (!val) {
-        this.errorInput.lastName = 'lastName';
+        this.errorInput.lastName.value = 'Last name is required';
+        if (!this.errorInput.lastName.touched) {
+          this.errorInput.lastName.touched = true;
+        }
       } else {
-        delete this.errorInput.lastName;
+        delete this.errorInput.lastName.value;
       }
     },
     phone(val) {
-      if (!val || isNaN(+val)) {
-        this.errorInput.phone = 'phone';
+      if (!val || isNaN(+val) || (val + '').length !== 9) {
+        this.errorInput.phone.value = '9 characters Phone is required';
+        if (!this.errorInput.phone.touched) {
+          this.errorInput.phone.touched = true;
+        }
       } else {
-        delete this.errorInput.phone;
+        delete this.errorInput.phone.value;
       }
     },
     date_service(val) {
       if (!val) {
-        this.errorInput.date_service = 'date_service';
+        this.errorInput.date_service.value = 'Please pick a date';
+        if (!this.errorInput.date_service.touched) {
+          this.errorInput.date_service.touched = true;
+        }
       } else {
-        delete this.errorInput.date_service;
+        delete this.errorInput.date_service.value;
       }
     },
     address(val) {
       if (!val) {
-        this.errorInput.address = 'address';
+        this.errorInput.address.value = 'Address is required';
+        if (!this.errorInput.address.touched) {
+          this.errorInput.address.touched = true;
+        }
       } else {
-        delete this.errorInput.address;
+        delete this.errorInput.address.value;
       }
     },
     department(val) {
       if (!val) {
-        this.errorInput.department = 'department';
+        this.errorInput.department.value = 'Department is required';
+        if (!this.errorInput.department.touched) {
+          this.errorInput.department.touched = true;
+        }
       } else {
-        delete this.errorInput.department;
+        delete this.errorInput.department.value;
       }
     },
     comuna(val) {
       if (!val || isNaN(+val)) {
-        this.errorInput.comuna = 'comuna';
+        this.errorInput.comuna.value = 'Comuna is required';
+        if (!this.errorInput.comuna.touched) {
+          this.errorInput.comuna.touched = true;
+        }
       } else {
-        delete this.errorInput.comuna;
+        delete this.errorInput.comuna.value;
       }
     },
   },
@@ -225,17 +264,30 @@ export default {
     },
 
     async validationForm() {
-      if (!Object.keys(this.errorInput).length) {
+      if (!this.hasErrorForm()) {
         this.submitForm();
         return;
       }
       this.toast = await toastController.create({
-        message: `Please verify ${Object.values(this.errorInput).join(', ')}`,
+        message: `Please verify ${this.getErrorMessages()}`,
         position: 'bottom',
         duration: 2000,
         color: 'warning',
       });
       this.toast.present();
+    },
+
+    hasErrorForm() {
+      return !!Object.values(this.errorInput)
+        .map((val) => val.value)
+        .join('')
+        .trim().length;
+    },
+
+    getErrorMessages() {
+      return Object.values(this.errorInput)
+        .map((val) => val.value)
+        .join(', ');
     },
 
     clearForm() {
@@ -246,7 +298,15 @@ export default {
       this.address = '';
       this.department = '';
       this.comuna = null;
-      this.errorInput = {};
+      this.errorInput = {
+        name: {},
+        lastName: {},
+        phone: {},
+        date_service: {},
+        address: {},
+        department: {},
+        comuna: {},
+      };
     },
     submitForm() {
       const service = {
@@ -282,6 +342,7 @@ export default {
     IonLabel,
     IonItem,
     IonList,
+    IonText,
     IonDatetime,
   },
 };

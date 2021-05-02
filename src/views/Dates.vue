@@ -1,90 +1,102 @@
 <template>
-  <app-layout pageTitle="My services by date">
+  <app-layout>
     <template v-slot:toolbar>
       <ion-title size="large">
         Choose a date
       </ion-title>
     </template>
 
-    <div class="content">
-      <ion-grid>
-        <ion-row>
-          <ion-col class="ion-alignment-self-start">
-            <ion-button @click="openDatepicker">
-              <ion-icon :icon="calendar"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <div class="content__wrapper col-12">
-            <ion-list lines="none" :inset="false">
-              <ion-item-group>
-                Services for: {{ date }}
-                <ion-item-divider
-                  v-for="(datedService, index) in datedServices"
-                  :key="index"
-                >
-                  <ion-item-sliding>
-                    <ion-item
-                      lines="none"
-                      @click.self="goToDetail(datedService.order_code)"
-                    >
-                      <ion-label position="stacked" class="data-name">
-                        {{ datedService.first_name }}
-                      </ion-label>
-
-                      <ion-text color="tertiary">
-                        {{ datedService.telephone }}
-                      </ion-text>
-
-                      <ion-note>
-                        <ion-text color="dark">
-                          {{ datedService.user_direction }}
-                          <small>
-                            {{ datedService.comuna }}
-                          </small>
-                        </ion-text>
-                        <p>
-                          <ion-text color="dark">
-                            <strong>
-                              <em>
-                                Hora: {{ datedService.sched_hour }} hrs.
-                              </em>
-                            </strong>
-                          </ion-text>
-                        </p>
-                      </ion-note>
-
-                      <div class="buttons-items-wrapper" slot="end">
-                        <ion-button shape="round" class="message" size="small">
-                          <ion-icon :icon="sendOutline" size="small"></ion-icon>
-                          &nbsp;Message
-                        </ion-button>
-                        <ion-button shape="round" class="" size="small">
-                          <ion-icon :icon="logoUsd" size="small"></ion-icon>
-                        </ion-button>
-                      </div>
-                    </ion-item>
-
-                    <ion-item-options side="end">
-                      <ion-item-option
-                        color="danger"
-                        @click="deleteService(datedService.order_code)"
+    <template v-slot:default>
+      <div class="content">
+        <ion-grid>
+          <ion-row>
+            <ion-col class="ion-alignment-self-start">
+              <ion-button @click="openDatepicker">
+                <ion-icon :icon="calendar"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <div class="content__wrapper col-12">
+              <ion-list lines="none" :inset="false">
+                <ion-item-group>
+                  Services for: {{ date }}
+                  <ion-item-divider
+                    v-for="(datedService, index) in datedServices"
+                    :key="index"
+                  >
+                    <ion-item-sliding>
+                      <ion-item
+                        lines="none"
+                        @click.self="goToDetail(datedService.order_code)"
                       >
-                        <ion-icon :icon="trashOutline" size="large"></ion-icon>
-                        <ion-label>
-                          Eliminar
+                        <ion-label position="stacked" class="data-name">
+                          {{ datedService.first_name }}
                         </ion-label>
-                      </ion-item-option>
-                    </ion-item-options>
-                  </ion-item-sliding>
-                </ion-item-divider>
-              </ion-item-group>
-            </ion-list>
-          </div>
-        </ion-row>
-      </ion-grid>
-    </div>
+
+                        <ion-text color="tertiary">
+                          {{ datedService.telephone }}
+                        </ion-text>
+
+                        <ion-note>
+                          <ion-text color="dark">
+                            {{ datedService.user_direction }}
+                            <small>
+                              {{ datedService.comuna }}
+                            </small>
+                          </ion-text>
+                          <p>
+                            <ion-text color="dark">
+                              <strong>
+                                <em>
+                                  Hora: {{ datedService.sched_hour }} hrs.
+                                </em>
+                              </strong>
+                            </ion-text>
+                          </p>
+                        </ion-note>
+
+                        <div class="buttons-items-wrapper" slot="end">
+                          <ion-button
+                            shape="round"
+                            class="message"
+                            size="small"
+                          >
+                            <ion-icon
+                              :icon="sendOutline"
+                              size="small"
+                            ></ion-icon>
+                            &nbsp;Message
+                          </ion-button>
+                          <ion-button shape="round" class="" size="small">
+                            <ion-icon :icon="logoUsd" size="small"></ion-icon>
+                          </ion-button>
+                        </div>
+                      </ion-item>
+
+                      <ion-item-options side="end">
+                        <ion-item-option
+                          color="danger"
+                          @click="deleteService(datedService.order_code)"
+                        >
+                          <ion-icon
+                            :icon="trashOutline"
+                            size="large"
+                          ></ion-icon>
+                          <ion-label>
+                            Eliminar
+                          </ion-label>
+                        </ion-item-option>
+                      </ion-item-options>
+                    </ion-item-sliding>
+                  </ion-item-divider>
+                </ion-item-group>
+              </ion-list>
+            </div>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </template>
   </app-layout>
 </template>
 

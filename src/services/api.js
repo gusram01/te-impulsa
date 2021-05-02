@@ -3,20 +3,35 @@ import axios from 'axios';
 const url = process.env.VUE_APP_URL;
 const token_business = process.env.VUE_APP_TOKEN;
 
-export const getInfo = () =>
-  axios
-    .post(`${url}/getPedingServices`, { token_business })
+const postActionListServices = (action) => {
+  const enumAction = {
+    pending: 'getPedingServices',
+    history: 'historicServices',
+  };
+
+  return axios
+    .post(`${url}/${enumAction[action]}`, { token_business })
     .then((resp) => {
+      console.log(resp.data);
       if (!resp.data.success) {
         throw new Error('Empty data');
       }
-      console.log(resp.data.data);
-      return resp.data.data;
+      return {
+        ok: true,
+        data: resp.data.data,
+      };
     })
-    .catch((err) => {
-      console.error(err);
-      return [];
+    .catch((error) => {
+      console.error(error);
+      return {
+        ok: false,
+        data: [],
+        error,
+      };
     });
+};
+export const getInfo = () => postActionListServices('pending');
+export const getHistory = () => postActionListServices('history');
 
 const postActionById = (orderCode, action) => {
   const params = new URLSearchParams();
