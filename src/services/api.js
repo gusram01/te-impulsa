@@ -18,63 +18,45 @@ export const getInfo = () =>
       return [];
     });
 
-export const getServiceById = (orderCode) => {
+const postActionById = (orderCode, action) => {
   const params = new URLSearchParams();
-
+  const enumAction = {
+    detail: 'serviceDetail',
+    finish: 'finishService',
+    delete: 'deleteService',
+  };
   params.append('order_code', orderCode);
 
   return axios
-    .post(`${url}/serviceDetail`, params)
+    .post(`${url}/${enumAction[action]}`, params)
     .then((resp) => {
       if (!resp.data.success) {
         throw new Error('Empty data');
       }
-      return resp.data.data;
+      return {
+        orderCode,
+        data: resp.data.data,
+      };
     })
-    .catch((err) => {
-      console.error(err);
-      return [];
+    .catch((error) => {
+      console.error(error);
+      return {
+        error,
+        data: [],
+      };
     });
+};
+
+export const getServiceById = (orderCode) => {
+  return postActionById(orderCode, 'detail');
 };
 
 export const finishServiceById = (orderCode) => {
-  const params = new URLSearchParams();
-
-  params.append('order_code', orderCode);
-
-  return axios
-    .post(`${url}/finishService`, params)
-    .then((resp) => {
-      console.error(JSON.stringify(resp.data));
-      if (!resp.data.success) {
-        throw new Error('Empty data');
-      }
-      return resp.data.success;
-    })
-    .catch((err) => {
-      console.error(err);
-      return err;
-    });
+  return postActionById(orderCode, 'finish');
 };
 
 export const deleteServiceById = (orderCode) => {
-  const params = new URLSearchParams();
-
-  params.append('order_code', orderCode);
-
-  return axios
-    .post(`${url}/deleteService`, params)
-    .then((resp) => {
-      console.error(JSON.stringify(resp.data));
-      if (!resp.data.success) {
-        throw new Error('Empty data');
-      }
-      return resp.data.success;
-    })
-    .catch((err) => {
-      console.error(err);
-      return err;
-    });
+  return postActionById(orderCode, 'delete');
 };
 
 export const getPendingByDate = (day, month, year) => {
@@ -88,7 +70,6 @@ export const getPendingByDate = (day, month, year) => {
   return axios
     .post(`${url}/getPedingServicesByDate`, params)
     .then((resp) => {
-      console.log(resp);
       if (!resp.data.success) {
         throw new Error('Empty data');
       }
@@ -109,6 +90,7 @@ export const newService = (service) => {
   return axios
     .post(`${url}/newService`, params)
     .then((resp) => {
+      console.log(resp);
       if (!resp.data.success) {
         throw new Error('Empty data');
       }

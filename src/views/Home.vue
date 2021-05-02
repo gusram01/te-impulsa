@@ -25,73 +25,17 @@
       >
       </ion-refresher-content>
     </ion-refresher>
+
     <div class="content__wrapper">
       <ion-list lines="none" :inset="false">
-        <ion-item-group v-for="(date, index) in datedServices" :key="index">
-          <ion-datetime :readonly="true" :value="date[0].service_date" />
-          <ion-item-divider v-for="item in date" :key="item.order_code">
-            <ion-item-sliding>
-              <ion-item-options side="start">
-                <ion-item-option
-                  color="secondary"
-                  @click="finishService(item.order_code)"
-                >
-                  <ion-icon :icon="checkmarkCircle" size="large"></ion-icon>
-                  <ion-label>
-                    Finish Service
-                  </ion-label>
-                </ion-item-option>
-              </ion-item-options>
-
-              <ion-item lines="none" @click.self="goToDetail(item.order_code)">
-                <ion-label position="stacked" class="data-name">
-                  {{ item.first_name }}
-                </ion-label>
-
-                <ion-text color="tertiary">
-                  {{ item.telephone }}
-                </ion-text>
-
-                <ion-note>
-                  <ion-text color="dark">
-                    {{ item.user_direction }}
-                    <small>
-                      {{ item.comuna }}
-                    </small>
-                  </ion-text>
-                  <p>
-                    <ion-text color="dark">
-                      <strong>
-                        <em> Hora: {{ item.sched_hour }} hrs. </em>
-                      </strong>
-                    </ion-text>
-                  </p>
-                </ion-note>
-
-                <div class="buttons-items-wrapper" slot="end">
-                  <ion-button shape="round" class="message" size="small">
-                    <ion-icon :icon="sendOutline" size="small"></ion-icon>
-                    &nbsp;Message
-                  </ion-button>
-                  <ion-button shape="round" class="" size="small">
-                    <ion-icon :icon="logoUsd" size="small"></ion-icon>
-                  </ion-button>
-                </div>
-              </ion-item>
-
-              <ion-item-options side="end">
-                <ion-item-option
-                  color="danger"
-                  @click="deleteService(item.order_code)"
-                >
-                  <ion-icon :icon="trashOutline" size="large"></ion-icon>
-                  <ion-label>
-                    Eliminar
-                  </ion-label>
-                </ion-item-option>
-              </ion-item-options>
-            </ion-item-sliding>
-          </ion-item-divider>
+        <ion-item-group v-for="(services, index) in datedServices" :key="index">
+          <ion-datetime :readonly="true" :value="services[0].service_date" />
+          <app-services
+            :services="services"
+            :deleteService="deleteService"
+            :finishService="finishService"
+          >
+          </app-services>
         </ion-item-group>
       </ion-list>
     </div>
@@ -102,68 +46,36 @@
 import {
   IonList,
   IonDatetime,
-  IonItem,
   IonItemGroup,
-  IonItemOption,
-  IonItemOptions,
-  IonIcon,
-  IonLabel,
-  IonText,
-  IonNote,
-  IonItemDivider,
   IonButton,
-  IonItemSliding,
   IonTitle,
   IonRefresher,
   IonRefresherContent,
   modalController,
 } from '@ionic/vue';
-import {
-  people,
-  add,
-  trashOutline,
-  checkmarkCircle,
-  sendOutline,
-  calendar,
-  logoUsd,
-  chevronDownCircleOutline,
-} from 'ionicons/icons';
+import { add, chevronDownCircleOutline } from 'ionicons/icons';
 
 import { getInfo, finishServiceById, deleteServiceById } from '../services/api';
 
 import ModalForm from '../components/ModalForm.vue';
+import AppServices from '../components/ItemService.vue';
 
 export default {
   components: {
     IonList,
     IonDatetime,
-    IonItem,
     IonItemGroup,
-    IonItemOption,
-    IonItemOptions,
-    IonIcon,
-    IonLabel,
-    IonText,
-    IonNote,
-    IonItemDivider,
     IonButton,
-    IonItemSliding,
     IonTitle,
     IonRefresher,
     IonRefresherContent,
+    AppServices,
   },
   data() {
     return {
-      sendOutline,
-      people,
       add,
-      checkmarkCircle,
-      trashOutline,
-      calendar,
-      logoUsd,
       chevronDownCircleOutline,
       datedServices: {},
-      calendarData: {},
       modal: null,
     };
   },
@@ -175,18 +87,9 @@ export default {
   },
 
   methods: {
-    goToDetail(id) {
-      this.$router.push(`/service/${id}`);
-    },
-
     finishService(orderCode) {
       finishServiceById(orderCode)
-        .then((response) => {
-          if (response) {
-            this.datedServices = {};
-            return getInfo(orderCode);
-          }
-        })
+        .then(this.canRefreshServices)
         .then(this.convertServices)
         .catch((err) => {
           console.error(err);
@@ -195,16 +98,18 @@ export default {
 
     deleteService(orderCode) {
       deleteServiceById(orderCode)
-        .then((response) => {
-          if (response) {
-            this.datedServices = {};
-            return getInfo(orderCode);
-          }
-        })
+        .then(this.canRefreshServices)
         .then(this.convertServices)
         .catch((err) => {
           console.error(err);
         });
+    },
+
+    canRefreshServices(response) {
+      if (response.orderCode) {
+        this.datedServices = {};
+        return getInfo(response.orderCode);
+      }
     },
 
     convertServices(items) {
@@ -258,21 +163,11 @@ ion-button.add {
   --border-radius: 50%;
 }
 
-ion-button.message {
-  --padding-end: 1.3em;
-  --padding-start: 1.3em;
-}
 ion-list {
   padding-top: 0;
   background: var(--ion-color-step-900);
 }
-ion-item-divider {
-  --padding-start: 0.8em;
-  --padding-end: 0.8em;
-  --padding-top: 0.4em;
-  --padding-bottom: 0.4em;
-  --background: var(--ion-color-step-900);
-}
+
 ion-item {
   --padding-top: 0.5em;
   --padding-bottom: 0.5em;
@@ -310,27 +205,5 @@ ion-item-group > ion-datetime {
 }
 .date-wrapper {
   text-align: center;
-}
-.buttons-items-wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-.buttons-items-wrapper > ion-button {
-  margin-top: 5%;
-  margin-bottom: auto;
-  font-size: 0.6em;
-  --padding-top: 2em;
-  --padding-bottom: 2em;
-}
-
-ion-label.data-name {
-  font-size: 1.5em;
-  margin-bottom: 0.5em;
-}
-ion-text,
-ion-label,
-ion-note {
-  pointer-events: none;
 }
 </style>

@@ -175,24 +175,34 @@ export default {
   },
 
   methods: {
-    setInitialData(items) {
-      const {
-        comuna,
-        first_name,
-        last_name,
-        service_date,
-        telephone,
-        user_depto,
-        user_direction,
-      } = items[0];
+    setInitialData(resp) {
+      if (!resp.error) {
+        const {
+          comuna,
+          first_name,
+          last_name,
+          service_date,
+          telephone,
+          user_depto,
+          user_direction,
+        } = resp.data[0];
 
-      this.name = first_name;
-      this.lastName = last_name;
-      this.phone = telephone;
-      this.date_service = service_date;
-      this.address = user_direction;
-      this.department = user_depto;
-      this.comuna = comuna;
+        this.name = first_name;
+        this.lastName = last_name;
+        this.phone = telephone;
+        this.date_service = service_date;
+        this.address = user_direction;
+        this.department = user_depto;
+        this.comuna = comuna;
+        return;
+      }
+      this.name = '';
+      this.lastName = '';
+      this.phone = '';
+      this.date_service = '';
+      this.address = '';
+      this.department = '';
+      this.comuna = '';
     },
   },
 };
