@@ -45,7 +45,7 @@
             class="message"
             size="small"
             :disabled="!isValidPhoneNumber(item.telephone)"
-            :href="`https://api.whatsapp.com/send?phone=+5215${item.telephone}`"
+            :href="`https://api.whatsapp.com/send?phone=+5619${item.telephone}`"
           >
             <ion-icon :icon="sendOutline" size="small"></ion-icon>
             &nbsp;Message
@@ -55,7 +55,7 @@
             size="small"
             :disabled="!isValidPhoneNumber(item.telephone)"
             :href="
-              `https://wa.me/5215${item.telephone}?text=https://teimpulsamos.cl/api/v1/payment/payService`
+              `https://wa.me/5619${item.telephone}?text=https://teimpulsamos.cl/api/v1/payment/payService`
             "
           >
             <ion-icon :icon="logoUsd" size="small"></ion-icon>

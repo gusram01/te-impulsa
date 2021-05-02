@@ -12,7 +12,6 @@ const postActionListServices = (action) => {
   return axios
     .post(`${url}/${enumAction[action]}`, { token_business })
     .then((resp) => {
-      console.log(resp.data);
       if (!resp.data.success) {
         throw new Error('Empty data');
       }
@@ -30,8 +29,6 @@ const postActionListServices = (action) => {
       };
     });
 };
-export const getInfo = () => postActionListServices('pending');
-export const getHistory = () => postActionListServices('history');
 
 const postActionById = (orderCode, action) => {
   const params = new URLSearchParams();
@@ -62,17 +59,32 @@ const postActionById = (orderCode, action) => {
     });
 };
 
-export const getServiceById = (orderCode) => {
-  return postActionById(orderCode, 'detail');
-};
+export const getInfo = () => postActionListServices('pending');
 
-export const finishServiceById = (orderCode) => {
-  return postActionById(orderCode, 'finish');
-};
+export const getHistory = () => postActionListServices('history');
 
-export const deleteServiceById = (orderCode) => {
-  return postActionById(orderCode, 'delete');
-};
+export const getServiceById = (orderCode) =>
+  postActionById(orderCode, 'detail');
+
+export const finishServiceById = (orderCode) =>
+  postActionById(orderCode, 'finish');
+
+export const deleteServiceById = (orderCode) =>
+  postActionById(orderCode, 'delete');
+
+export const getComunas = () =>
+  axios
+    .get('https://teimpulsamos.cl/api/v1/helper/getComunas')
+    .then((resp) => {
+      if (!resp.data.success) {
+        throw new Error('Empty data');
+      }
+      return resp.data.data;
+    })
+    .catch((error) => {
+      console.error(error);
+      return [];
+    });
 
 export const getPendingByDate = (day, month, year) => {
   const params = new URLSearchParams();

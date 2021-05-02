@@ -32,15 +32,6 @@
           clear-input
           @IonInput="phone = $event.target.value"
         ></ion-input>
-        <div
-          v-if="
-            errorInput.phone &&
-              errorInput.phone.value &&
-              errorInput.phone.touched
-          "
-        >
-          <ion-text color="danger">{{ errorInput.phone.value }} </ion-text>
-        </div>
       </ion-item>
       <ion-item>
         <ion-label>Date</ion-label>
@@ -69,12 +60,18 @@
       </ion-item>
       <ion-item>
         <ion-label>Comuna</ion-label>
-        <ion-input
-          type="number"
+        <ion-select
           placeholder="Comuna"
-          clear-input
-          @IonInput="comuna = $event.target.value"
-        ></ion-input>
+          @IonChange="comuna = $event.target.value"
+        >
+          <ion-select-option
+            v-for="val in comunas"
+            :key="val.id_comuna"
+            :value="val.id_comuna"
+          >
+            {{ val.comuna_name }}
+          </ion-select-option>
+        </ion-select>
       </ion-item>
 
       <ion-grid>
@@ -111,12 +108,13 @@ import {
   IonLabel,
   IonItem,
   IonList,
-  IonText,
+  IonSelect,
+  IonSelectOption,
   IonDatetime,
   toastController,
 } from '@ionic/vue';
 import { closeOutline } from 'ionicons/icons';
-import { newService } from '../services/api';
+import { newService, getComunas } from '../services/api';
 
 export default {
   name: 'Modal',
@@ -126,6 +124,9 @@ export default {
   },
 
   mounted() {
+    getComunas().then((resp) => {
+      this.comunas = resp;
+    });
     if (!this.name.length) {
       this.errorInput.name.value = 'First name is required';
     }
@@ -134,7 +135,7 @@ export default {
       this.errorInput.lastName.value = 'Last name is required';
     }
 
-    if (this.phone <= 0 || isNaN(+this.phone)) {
+    if (+this.phone <= 0 || isNaN(+this.phone)) {
       this.errorInput.phone.value = '9 characters Phone is required';
     }
 
@@ -150,7 +151,7 @@ export default {
       this.errorInput.department.value = 'Department is required';
     }
 
-    if (this.comuna <= 0 || isNaN(+this.comuna)) {
+    if (+this.comuna <= 0 || isNaN(+this.comuna)) {
       this.errorInput.comuna.value = 'Comuna is required';
     }
   },
@@ -167,6 +168,7 @@ export default {
       address: '',
       department: '',
       comuna: '',
+      comunas: [],
       errorInput: {
         name: {},
         lastName: {},
@@ -269,10 +271,21 @@ export default {
         return;
       }
       this.toast = await toastController.create({
-        message: `Please verify ${this.getErrorMessages()}`,
+        message: `Please verify:
+        ${this.getErrorMessages()}`,
+        animated: true,
         position: 'bottom',
-        duration: 2000,
-        color: 'warning',
+        duration: 7000,
+        color: 'danger',
+        keyboardClose: true,
+        buttons: [
+          {
+            side: 'end',
+            icon: 'close',
+            text: 'Close',
+            handler: () => {},
+          },
+        ],
       });
       this.toast.present();
     },
@@ -321,6 +334,7 @@ export default {
         comuna: this.comuna,
         token_business: '841f80d3-7f4c-11eb-b629-f603cfed5859',
       };
+      console.log(service);
 
       newService(service).then(() => {
         this.clearForm();
@@ -342,7 +356,8 @@ export default {
     IonLabel,
     IonItem,
     IonList,
-    IonText,
+    IonSelect,
+    IonSelectOption,
     IonDatetime,
   },
 };

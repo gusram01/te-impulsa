@@ -10,7 +10,7 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <ion-list lines="none">
+      <ion-list lines="none" class="content__wrapper">
         <ion-item-divider>
           <ion-item>
             <h4 slot="start">Order: {{ $route.params.id }}</h4>
@@ -252,5 +252,12 @@ ion-datetime {
   height: 100%;
   border-radius: 45% 0 45% 50%;
   background: rgba(0, 0, 0, 0.13);
+}
+ion-content {
+  --background: var(--ion-color-step-900);
+}
+
+.content__wrapper {
+  background: var(--ion-color-step-900);
 }
 </style>

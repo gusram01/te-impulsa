@@ -17,11 +17,16 @@
       </ion-button>
     </template>
     <template v-slot:default>
-      <ion-refresher slot="fixed" @ionRefresh="refreshServices($event)">
+      <ion-refresher
+        slot="fixed"
+        :pull-min="160"
+        :pull-max="300"
+        @ionRefresh="refreshServices($event)"
+      >
         <ion-refresher-content
           :pulling-icon="chevronDownCircleOutline"
           pulling-text="Pull to refresh"
-          refreshing-spinner="circles"
+          refreshing-spinner="circular"
         >
         </ion-refresher-content>
       </ion-refresher>
@@ -149,8 +154,11 @@ export default {
     refreshServices(event) {
       this.datedServices = {};
 
-      getInfo()
-        .then(this.convertServices)
+      return getInfo()
+        .then((resp) => {
+          this.convertServices(resp);
+          event.target.complete();
+        })
         .catch(() => {})
         .finally(() => {
           event.target.complete();

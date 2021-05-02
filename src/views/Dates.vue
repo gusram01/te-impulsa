@@ -7,7 +7,7 @@
     </template>
 
     <template v-slot:default>
-      <div class="content">
+      <div class="content__wrapper">
         <ion-grid>
           <ion-row>
             <ion-col class="ion-alignment-self-start">
@@ -17,82 +17,17 @@
             </ion-col>
           </ion-row>
           <ion-row>
-            <div class="content__wrapper col-12">
+            <ion-col class="col-12">
               <ion-list lines="none" :inset="false">
                 <ion-item-group>
                   Services for: {{ date }}
-                  <ion-item-divider
-                    v-for="(datedService, index) in datedServices"
-                    :key="index"
-                  >
-                    <ion-item-sliding>
-                      <ion-item
-                        lines="none"
-                        @click.self="goToDetail(datedService.order_code)"
-                      >
-                        <ion-label position="stacked" class="data-name">
-                          {{ datedService.first_name }}
-                        </ion-label>
-
-                        <ion-text color="tertiary">
-                          {{ datedService.telephone }}
-                        </ion-text>
-
-                        <ion-note>
-                          <ion-text color="dark">
-                            {{ datedService.user_direction }}
-                            <small>
-                              {{ datedService.comuna }}
-                            </small>
-                          </ion-text>
-                          <p>
-                            <ion-text color="dark">
-                              <strong>
-                                <em>
-                                  Hora: {{ datedService.sched_hour }} hrs.
-                                </em>
-                              </strong>
-                            </ion-text>
-                          </p>
-                        </ion-note>
-
-                        <div class="buttons-items-wrapper" slot="end">
-                          <ion-button
-                            shape="round"
-                            class="message"
-                            size="small"
-                          >
-                            <ion-icon
-                              :icon="sendOutline"
-                              size="small"
-                            ></ion-icon>
-                            &nbsp;Message
-                          </ion-button>
-                          <ion-button shape="round" class="" size="small">
-                            <ion-icon :icon="logoUsd" size="small"></ion-icon>
-                          </ion-button>
-                        </div>
-                      </ion-item>
-
-                      <ion-item-options side="end">
-                        <ion-item-option
-                          color="danger"
-                          @click="deleteService(datedService.order_code)"
-                        >
-                          <ion-icon
-                            :icon="trashOutline"
-                            size="large"
-                          ></ion-icon>
-                          <ion-label>
-                            Eliminar
-                          </ion-label>
-                        </ion-item-option>
-                      </ion-item-options>
-                    </ion-item-sliding>
-                  </ion-item-divider>
+                  <app-services
+                    :services="datedServices"
+                    :deleteService="deleteService"
+                  ></app-services>
                 </ion-item-group>
               </ion-list>
-            </div>
+            </ion-col>
           </ion-row>
         </ion-grid>
       </div>
@@ -110,15 +45,7 @@ import {
   IonRow,
   IonCol,
   IonList,
-  IonItem,
   IonItemGroup,
-  IonItemOption,
-  IonItemOptions,
-  IonLabel,
-  IonText,
-  IonNote,
-  IonItemDivider,
-  IonItemSliding,
 } from '@ionic/vue';
 import {
   calendar,
@@ -128,6 +55,7 @@ import {
   trashOutline,
 } from 'ionicons/icons';
 import { getPendingByDate, deleteServiceById } from '../services/api';
+import AppServices from '../components/ItemService.vue';
 
 const DatePicker = Plugins.DatePickerPlugin;
 
@@ -140,15 +68,8 @@ export default {
     IonRow,
     IonCol,
     IonList,
-    IonItem,
     IonItemGroup,
-    IonItemOption,
-    IonItemOptions,
-    IonLabel,
-    IonText,
-    IonNote,
-    IonItemDivider,
-    IonItemSliding,
+    AppServices,
   },
 
   data() {
@@ -229,10 +150,6 @@ export default {
           console.error(err);
         });
     },
-
-    goToDetail(id) {
-      this.$router.push(`/service/${id}`);
-    },
   },
 };
 </script>
@@ -268,9 +185,17 @@ ion-item-group:not(:first-child) {
   margin-top: 5%;
 }
 
+ion-item-group:not(:first-child) {
+  margin-top: 5%;
+}
+ion-item-group > ion-datetime {
+  color: var(--ion-color-tertiary);
+  opacity: 1;
+}
+
 .content__wrapper {
   display: flex;
-  flex-direction: column;
+
   width: 100%;
   height: 100%;
   background: var(--ion-color-step-900);
