@@ -149,9 +149,9 @@ export default {
         .then((resp) => {
           if (resp.ok) {
             const anchor = document.createElement('a');
-            anchor.href = `https://wa.me/5619${service.telephone}?text=${resp.data.url}`;
-            anchor.className = 'hidden';
+            anchor.href = `https://wa.me/5619${service.telephone}?text=https://teimpulsamos.cl/tokenpay/${resp.data.token}`;
             console.log(anchor);
+            anchor.className = 'hidden';
             anchor.click();
             anchor.remove();
           }
