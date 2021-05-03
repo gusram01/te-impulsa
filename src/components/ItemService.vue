@@ -53,10 +53,8 @@
           <ion-button
             shape="round"
             size="small"
-            :disabled="!isValidPhoneNumber(item.telephone)"
-            :href="
-              `https://wa.me/5619${item.telephone}?text=https://teimpulsamos.cl/api/v1/payment/payService`
-            "
+            :disabled="isLoading || !isValidPhoneNumber(item.telephone)"
+            @click="setHrefWebpay(item)"
           >
             <ion-icon :icon="logoUsd" size="small"></ion-icon>
           </ion-button>
@@ -94,6 +92,8 @@ import {
   logoUsd,
 } from 'ionicons/icons';
 
+import { getWebpayUrl } from '../services/api';
+
 export default {
   components: {
     IonItem,
@@ -128,6 +128,7 @@ export default {
       checkmarkCircle,
       trashOutline,
       logoUsd,
+      isLoading: false,
     };
   },
   computed: {
@@ -141,6 +142,24 @@ export default {
     },
     isValidPhoneNumber(phone) {
       return phone && ('' + phone).length === 9;
+    },
+    setHrefWebpay(service) {
+      this.isLoading = true;
+      getWebpayUrl(service.order_code, '3500')
+        .then((resp) => {
+          if (resp.ok) {
+            const anchor = document.createElement('a');
+            anchor.href = `https://wa.me/5619${service.telephone}?text=${resp.data.url}`;
+            anchor.className = 'hidden';
+            console.log(anchor);
+            anchor.click();
+            anchor.remove();
+          }
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
   },
 };
@@ -185,5 +204,10 @@ ion-text,
 ion-label,
 ion-note {
   pointer-events: none;
+}
+</style>
+<style scoped>
+.hidden {
+  display: none;
 }
 </style>

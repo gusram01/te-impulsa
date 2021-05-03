@@ -72,6 +72,33 @@ export const finishServiceById = (orderCode) =>
 export const deleteServiceById = (orderCode) =>
   postActionById(orderCode, 'delete');
 
+export const getWebpayUrl = (orderCode, amountOrder) => {
+  const params = new URLSearchParams();
+
+  params.append('order_code', orderCode);
+  params.append('amount_order', amountOrder);
+
+  return axios
+    .post('https://teimpulsamos.cl/api/v1/payment/payService', params)
+    .then((resp) => {
+      if (!resp.data.success) {
+        throw new Error('Empty data');
+      }
+      return {
+        ok: true,
+        data: resp.data.data,
+      };
+    })
+    .catch((error) => {
+      console.error(error);
+      return {
+        ok: false,
+        data: '',
+        error,
+      };
+    });
+};
+
 export const getComunas = () =>
   axios
     .get('https://teimpulsamos.cl/api/v1/helper/getComunas')
