@@ -25,16 +25,14 @@
 
         <ion-note>
           <ion-text color="dark">
-            {{ item.user_direction }}
+            {{ item.user_direction }},&nbsp;
             <small>
               {{ item.comuna }}
             </small>
           </ion-text>
           <p>
             <ion-text color="dark">
-              <strong>
-                <em> Hora: {{ item.sched_hour }} hrs. </em>
-              </strong>
+              <strong> Hora: {{ item.sched_hour }} hrs. </strong>
             </ion-text>
           </p>
         </ion-note>
@@ -141,7 +139,7 @@ export default {
       this.$router.push(`/service/${id}`);
     },
     isValidPhoneNumber(phone) {
-      return phone && ('' + phone).length === 9;
+      return phone && ('' + phone).length === 8;
     },
     setHrefWebpay(service) {
       this.isLoading = true;

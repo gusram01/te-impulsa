@@ -18,3 +18,12 @@ export default {
   },
 };
 </script>
+
+<style>
+.alert-radio-label.sc-ion-alert-md {
+  color: black;
+}
+[aria-checked='true'].sc-ion-alert-md .alert-radio-label.sc-ion-alert-md {
+  color: black;
+}
+</style>

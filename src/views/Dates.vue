@@ -46,6 +46,7 @@ import {
   IonCol,
   IonList,
   IonItemGroup,
+  toastController,
 } from '@ionic/vue';
 import {
   calendar,
@@ -80,8 +81,9 @@ export default {
       sendOutline,
       logoUsd,
       trashOutline,
-      date: '',
       datedServices: [],
+      date: '',
+      toast: null,
       isLoadingDatePicker: false,
     };
   },
@@ -133,13 +135,30 @@ export default {
       }
     },
 
+    async showToast(msg, type = 'success') {
+      this.toast = await toastController.create({
+        message: msg,
+        animated: true,
+        position: 'bottom',
+        duration: 2000,
+        color: type,
+      });
+      this.toast.present();
+    },
+
     deleteService(orderCode) {
       deleteServiceById(orderCode)
         .then((response) => {
-          if (response) {
+          if (response.error) {
+            this.showToast(
+              'Something went wrong, please try again later',
+              'danger'
+            );
+          } else {
             this.datedServices = [];
             const arrDate = this.date.split('/');
 
+            this.showToast('Service Deleted');
             return getPendingByDate(arrDate[0], arrDate[1], arrDate[2]);
           }
         })

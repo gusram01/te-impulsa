@@ -61,6 +61,7 @@ import {
   IonRefresher,
   IonRefresherContent,
   modalController,
+  toastController,
 } from '@ionic/vue';
 import { add, chevronDownCircleOutline } from 'ionicons/icons';
 
@@ -85,6 +86,7 @@ export default {
       add,
       chevronDownCircleOutline,
       datedServices: {},
+      toast: null,
       modal: null,
     };
   },
@@ -98,7 +100,16 @@ export default {
   methods: {
     finishService(orderCode) {
       finishServiceById(orderCode)
-        .then(this.canRefreshServices)
+        .then((resp) => {
+          if (resp.error) {
+            this.showToast(
+              'Something went wrong, please try again later',
+              'danger'
+            );
+          }
+          this.showToast('Service finished');
+          return this.canRefreshServices(resp);
+        })
         .then(this.convertServices)
         .catch((err) => {
           console.error(err);
@@ -107,7 +118,16 @@ export default {
 
     deleteService(orderCode) {
       deleteServiceById(orderCode)
-        .then(this.canRefreshServices)
+        .then((resp) => {
+          if (resp.error) {
+            this.showToast(
+              'Something went wrong, please try again later',
+              'danger'
+            );
+          }
+          this.showToast('Service deleted');
+          return this.canRefreshServices(resp);
+        })
         .then(this.convertServices)
         .catch((err) => {
           console.error(err);
@@ -117,6 +137,7 @@ export default {
     canRefreshServices(response) {
       if (response.orderCode) {
         this.datedServices = {};
+
         return getInfo(response.orderCode);
       }
     },
@@ -147,8 +168,26 @@ export default {
       this.modal.present();
     },
 
+    async showToast(msg, type = 'success') {
+      this.toast = await toastController.create({
+        message: msg,
+        animated: true,
+        position: 'bottom',
+        duration: 2000,
+        color: type,
+      });
+      this.toast.present();
+    },
+
     closeModal() {
       this.modal.dismiss();
+      this.datedServices = {};
+
+      getInfo()
+        .then((resp) => {
+          this.convertServices(resp);
+        })
+        .catch(() => {});
     },
 
     refreshServices(event) {

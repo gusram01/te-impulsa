@@ -62,14 +62,19 @@
         <ion-label>Comuna</ion-label>
         <ion-select
           placeholder="Comuna"
+          :interface-options="{ cssClass: 'my-custom-interface' }"
           @IonChange="comuna = $event.target.value"
         >
           <ion-select-option
+            class="comuna-option"
+            style="color: red"
             v-for="val in comunas"
             :key="val.id_comuna"
             :value="val.id_comuna"
           >
-            {{ val.comuna_name }}
+            <ion-text color="danger">
+              {{ val.comuna_name }}
+            </ion-text>
           </ion-select-option>
         </ion-select>
       </ion-item>
@@ -111,13 +116,31 @@ import {
   IonSelect,
   IonSelectOption,
   IonDatetime,
+  IonText,
   toastController,
 } from '@ionic/vue';
 import { closeOutline } from 'ionicons/icons';
 import { newService, getComunas } from '../services/api';
 
 export default {
-  name: 'Modal',
+  components: {
+    IonGrid,
+    IonCol,
+    IonRow,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonButton,
+    IonInput,
+    IonLabel,
+    IonItem,
+    IonList,
+    IonSelect,
+    IonSelectOption,
+    IonDatetime,
+    IonText,
+  },
   props: {
     title: { type: String, default: 'Super Modal' },
     close: { type: Function },
@@ -203,8 +226,8 @@ export default {
       }
     },
     phone(val) {
-      if (!val || isNaN(+val) || (val + '').length !== 9) {
-        this.errorInput.phone.value = '9 characters Phone is required';
+      if (!val || isNaN(+val) || (val + '').length !== 8) {
+        this.errorInput.phone.value = '8 characters Phone is required';
         if (!this.errorInput.phone.touched) {
           this.errorInput.phone.touched = true;
         }
@@ -334,7 +357,6 @@ export default {
         comuna: this.comuna,
         token_business: '841f80d3-7f4c-11eb-b629-f603cfed5859',
       };
-      console.log(service);
 
       newService(service).then(() => {
         this.clearForm();
@@ -342,23 +364,6 @@ export default {
         this.close();
       });
     },
-  },
-  components: {
-    IonGrid,
-    IonCol,
-    IonRow,
-    IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-    IonButton,
-    IonInput,
-    IonLabel,
-    IonItem,
-    IonList,
-    IonSelect,
-    IonSelectOption,
-    IonDatetime,
   },
 };
 </script>
@@ -378,4 +383,15 @@ ion-datetime {
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
   border-radius: 10px;
 }
+ion-select {
+  --placeholder-color: var(--ion-color-tertiary);
+  --placeholder-opacity: 1;
+}
+/* 
+.select-interface-option.comuna-option
+  > .alert-button-inner
+  > .alert-radio-label {
+  --color: #971e49 !important;
+  opacity: 1;
+} */
 </style>

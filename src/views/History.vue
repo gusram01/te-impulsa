@@ -10,7 +10,7 @@
       <div class="content__wrapper">
         <ion-list lines="none" :inset="false">
           <ion-item-group v-for="services in datedServices" :key="services">
-            <ion-datetime :readonly="true" :value="services[0].service_date" />
+            <ion-datetime :readonly="true" :value="services[0].last_update" />
             <app-services :services="services" :deleteService="deleteService">
             </app-services>
           </ion-item-group>
@@ -21,7 +21,13 @@
 </template>
 
 <script>
-import { IonTitle, IonList, IonItemGroup, IonDatetime } from '@ionic/vue';
+import {
+  IonTitle,
+  IonList,
+  IonItemGroup,
+  IonDatetime,
+  toastController,
+} from '@ionic/vue';
 import { getHistory, deleteServiceById } from '../services/api';
 
 import AppServices from '../components/ItemService.vue';
@@ -42,16 +48,37 @@ export default {
   data() {
     return {
       datedServices: {},
+      toast: null,
     };
   },
   methods: {
     deleteService(orderCode) {
       deleteServiceById(orderCode)
-        .then(this.canRefreshServices)
+        .then((resp) => {
+          if (resp.error) {
+            this.showToast(
+              'Something went wrong, please try again later',
+              'danger'
+            );
+          }
+          this.showToast('Service deleted');
+          return this.canRefreshServices(resp);
+        })
         .then(this.convertServices)
         .catch((err) => {
           console.error(err);
         });
+    },
+
+    async showToast(msg, type = 'success') {
+      this.toast = await toastController.create({
+        message: msg,
+        animated: true,
+        position: 'bottom',
+        duration: 2000,
+        color: type,
+      });
+      this.toast.present();
     },
 
     canRefreshServices(response) {
@@ -63,7 +90,7 @@ export default {
 
     convertServices(resp) {
       resp.data.forEach((item) => {
-        const dateToProcess = item.service_date.split('T')[0];
+        const dateToProcess = item.last_update.split('T')[0];
 
         if (!this.datedServices[dateToProcess]) {
           this.datedServices[dateToProcess] = [item];
