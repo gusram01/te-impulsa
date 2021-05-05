@@ -41,16 +41,25 @@ export default {
     AppServices,
   },
 
-  created() {
-    getHistory().then(this.convertServices);
-  },
-
   data() {
     return {
       datedServices: {},
       toast: null,
     };
   },
+
+  created() {
+    getHistory().then(this.convertServices);
+  },
+
+  updated() {
+    if (this.$route.path === '/history') {
+      this.datedServices = {};
+
+      getHistory().then(this.convertServices);
+    }
+  },
+
   methods: {
     deleteService(orderCode) {
       deleteServiceById(orderCode)

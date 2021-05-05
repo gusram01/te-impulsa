@@ -31,7 +31,39 @@
         </ion-refresher-content>
       </ion-refresher>
 
-      <div class="content__wrapper">
+      <ion-grid v-if="isEmptyDatedServices">
+        <ion-row
+          class="ion-justify-content-center ion-padding-top ion-padding-bottom"
+        >
+          <ion-col class="ion-text-center">
+            <h3>
+              <ion-text color="tertiary">There is no pending services</ion-text>
+            </h3>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-justify-content-center">
+          <ion-col size="8">
+            <ion-img :src="emptyImage"></ion-img>
+          </ion-col>
+        </ion-row>
+
+        <ion-row
+          class="ion-justify-content-center ion-padding-top ion-padding-bottom"
+        >
+          <ion-col class="ion-text-center">
+            <ion-button
+              flat
+              size="small"
+              class="add-service"
+              @click="openModal"
+            >
+              Click here to create a new one
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div class="content__wrapper" v-else>
         <ion-list lines="none" :inset="false">
           <ion-item-group
             v-for="(services, index) in datedServices"
@@ -60,6 +92,11 @@ import {
   IonTitle,
   IonRefresher,
   IonRefresherContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonImg,
+  IonText,
   modalController,
   toastController,
 } from '@ionic/vue';
@@ -70,6 +107,8 @@ import { getInfo, finishServiceById, deleteServiceById } from '../services/api';
 import ModalForm from '../components/ModalForm.vue';
 import AppServices from '../components/ItemService.vue';
 
+import emptyImage from '../assets/145.png';
+
 export default {
   components: {
     IonList,
@@ -79,12 +118,18 @@ export default {
     IonTitle,
     IonRefresher,
     IonRefresherContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonImg,
+    IonText,
     AppServices,
   },
   data() {
     return {
       add,
       chevronDownCircleOutline,
+      emptyImage,
       datedServices: {},
       toast: null,
       modal: null,
@@ -95,6 +140,12 @@ export default {
     getInfo()
       .then(this.convertServices)
       .catch(() => {});
+  },
+
+  computed: {
+    isEmptyDatedServices() {
+      return !Object.keys(this.datedServices).length;
+    },
   },
 
   methods: {
