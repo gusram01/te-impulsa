@@ -1,4 +1,12 @@
 <template>
+  <ion-loading
+    :is-open="isLoaderActive"
+    cssClass="loader"
+    message="Procesando..."
+    :duration="timeout"
+    @didDismiss="isLoaderActive = false"
+  >
+  </ion-loading>
   <ion-item-divider v-for="item in services" :key="item.order_code">
     <ion-item-sliding>
       <ion-item-options side="start">
@@ -72,6 +80,7 @@
 </template>
 <script>
 import {
+  IonLoading,
   IonItem,
   IonItemOption,
   IonItemOptions,
@@ -95,6 +104,7 @@ import { getWebpayUrl } from '../services/api';
 
 export default {
   components: {
+    IonLoading,
     IonItem,
     IonItemOption,
     IonItemOptions,
@@ -127,6 +137,8 @@ export default {
       checkmarkCircle,
       trashOutline,
       logoUsd,
+      isLoaderActive: false,
+      timeout: 1000,
       isLoading: false,
     };
   },
@@ -178,22 +190,21 @@ export default {
             text: 'Cancel',
             role: 'cancel',
             cssClass: 'secondary',
-            handler: () => {},
           },
           {
             text: 'Send Message',
             role: 'submit',
-            handler: () => {},
+            handler: () => (this.isLoaderActive = true),
           },
         ],
       });
       await alert.present();
       const resp = await alert.onDidDismiss();
       const amountOrder = resp.data.values.amount_order;
-      console.log(resp.role);
-      console.log(+amountOrder);
       if (resp.role === 'submit' && !isNaN(+amountOrder) && +amountOrder > 0) {
-        this.setHrefWebpay(service, amountOrder);
+        this.setHrefWebpay(service, amountOrder).then(() => {
+          this.isLoaderActive = false;
+        });
       }
     },
   },
