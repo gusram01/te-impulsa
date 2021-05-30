@@ -10,102 +10,20 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <ion-list lines="none" class="content__wrapper">
-        <ion-item-divider>
-          <ion-item>
-            <h4 slot="start">Order: {{ $route.params.id }}</h4>
-            <ion-button
-              :color="isDisabled ? 'tertiary' : 'dark'"
-              size="default"
-              @click="isDisabled = !isDisabled"
-            >
-              {{ isDisabled ? 'Edit' : 'Save' }}
-            </ion-button>
-          </ion-item>
-        </ion-item-divider>
-        <ion-item>
-          <ion-label>First name</ion-label>
-          <ion-input
-            type="text"
-            placeholder="First Name"
-            clear-input
-            :disabled="isDisabled"
-            :class="{ disabled: isDisabled }"
-            :value="name"
-            @IonInput="name = $event.target.value"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Last Name</ion-label>
-          <ion-input
-            type="text"
-            placeholder="Last Name"
-            clear-input
-            :disabled="isDisabled"
-            :class="{ disabled: isDisabled }"
-            :value="lastName"
-            @IonInput="lastName = $event.target.value"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Telephone</ion-label>
-          <ion-input
-            type="number"
-            placeholder="Telephone"
-            clear-input
-            :disabled="isDisabled"
-            :class="{ disabled: isDisabled }"
-            :value="phone"
-            @IonInput="phone = $event.target.value"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Date</ion-label>
-          <ion-datetime
-            display-format="MM/DD/YYYY"
-            :disabled="isDisabled"
-            :class="{ disabled: isDisabled }"
-            value="04/23/2021"
-            @IonChange="date_service = $event.target.value"
-          ></ion-datetime>
-        </ion-item>
-        <ion-item>
-          <ion-label>Direction</ion-label>
-          <ion-input
-            type="text"
-            placeholder="Direction"
-            clear-input
-            :disabled="isDisabled"
-            :class="{ disabled: isDisabled }"
-            :value="address"
-            @IonInput="address = $event.target.value"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Department</ion-label>
-          <ion-input
-            type="text"
-            placeholder="Department"
-            clear-input
-            :disabled="isDisabled"
-            :class="{ disabled: isDisabled }"
-            :value="department"
-            @IonInput="department = $event.target.value"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Comuna</ion-label>
-          <ion-input
-            type="number"
-            placeholder="Comuna"
-            clear-input
-            :disabled="isDisabled"
-            :class="{ disabled: isDisabled }"
-            :value="comuna"
-            @IonInput="comuna = $event.target.value"
-          ></ion-input>
-        </ion-item>
-      </ion-list>
+      <ion-tabs>
+        <ion-tab-bar slot="top">
+          <ion-tab-button tab="detail" :href="`/service/${$route.params.id}`">
+            <ion-label>Details</ion-label>
+          </ion-tab-button>
+
+          <ion-tab-button
+            tab="comments"
+            :href="`/service/${$route.params.id}/comments`"
+          >
+            <ion-label>Comments</ion-label>
+          </ion-tab-button>
+        </ion-tab-bar>
+      </ion-tabs>
     </ion-content>
   </ion-page>
 </template>
@@ -113,98 +31,38 @@
 <script>
 import {
   IonPage,
+  IonTabs,
+  IonTabBar,
+  IonTabButton,
   IonBackButton,
   IonButtons,
-  IonButton,
   IonHeader,
   IonToolbar,
   IonContent,
-  IonInput,
-  IonItem,
-  IonItemDivider,
-  IonList,
   IonLabel,
-  IonDatetime,
 } from '@ionic/vue';
-import { getServiceById } from '../services/api';
 
 export default {
   components: {
     IonPage,
+    IonTabs,
+    IonTabBar,
+    IonTabButton,
     IonBackButton,
     IonButtons,
-    IonButton,
     IonHeader,
     IonToolbar,
     IonContent,
-    IonInput,
-    IonItem,
-    IonItemDivider,
-    IonList,
     IonLabel,
-    IonDatetime,
   },
 
-  created() {
-    getServiceById(this.$route.params.id)
-      .then(this.setInitialData)
-      .catch(() => {
-        this.name = '';
-        this.lastName = '';
-        this.phone = '';
-        this.date_service = '';
-        this.address = '';
-        this.department = '';
-        this.comuna = '';
-      });
-  },
+  created() {},
 
   data() {
-    return {
-      isDisabled: true,
-      content: '',
-      name: '',
-      lastName: '',
-      phone: '',
-      date_service: '',
-      address: '',
-      department: '',
-      comuna: '',
-      errorInput: {},
-    };
+    return {};
   },
 
-  methods: {
-    setInitialData(resp) {
-      if (!resp.error) {
-        const {
-          comuna,
-          first_name,
-          last_name,
-          service_date,
-          telephone,
-          user_depto,
-          user_direction,
-        } = resp.data[0];
-
-        this.name = first_name;
-        this.lastName = last_name;
-        this.phone = telephone;
-        this.date_service = service_date;
-        this.address = user_direction;
-        this.department = user_depto;
-        this.comuna = comuna;
-        return;
-      }
-      this.name = '';
-      this.lastName = '';
-      this.phone = '';
-      this.date_service = '';
-      this.address = '';
-      this.department = '';
-      this.comuna = '';
-    },
-  },
+  methods: {},
 };
 </script>
 <style scoped>

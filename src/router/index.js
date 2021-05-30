@@ -24,6 +24,16 @@ const routes = [
   {
     path: '/service/:id',
     component: () => import('../views/ServiceDetail.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('../components/Detail.vue'),
+      },
+      {
+        path: 'comments',
+        component: () => import('../components/Comments.vue'),
+      },
+    ],
   },
 ];
 
