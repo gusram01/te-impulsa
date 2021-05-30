@@ -52,7 +52,7 @@
             shape="round"
             size="small"
             :disabled="isLoading || !isValidPhoneNumber(item.telephone)"
-            @click="setHrefWebpay(item)"
+            @click="presentAlertPrompt(item)"
           >
             <ion-icon :icon="logoUsd" size="small"></ion-icon>
           </ion-button>
@@ -82,6 +82,7 @@ import {
   IonItemDivider,
   IonButton,
   IonItemSliding,
+  alertController,
 } from '@ionic/vue';
 import {
   trashOutline,
@@ -141,9 +142,9 @@ export default {
     isValidPhoneNumber(phone) {
       return phone && ('' + phone).length === 8;
     },
-    setHrefWebpay(service) {
+    setHrefWebpay(service, amount_order) {
       this.isLoading = true;
-      getWebpayUrl(service.order_code, '3500')
+      getWebpayUrl(service.order_code, amount_order)
         .then((resp) => {
           if (resp.ok) {
             const anchor = document.createElement('a');
@@ -158,6 +159,42 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
+    },
+
+    async presentAlertPrompt(service) {
+      const alert = await alertController.create({
+        cssClass: 'alert',
+        header: 'Ingresa el monto de la orden',
+        inputs: [
+          {
+            name: 'amount_order',
+            id: 'amount_order',
+            value: '',
+            placeholder: 'Order amount',
+          },
+        ],
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {},
+          },
+          {
+            text: 'Send Message',
+            role: 'submit',
+            handler: () => {},
+          },
+        ],
+      });
+      await alert.present();
+      const resp = await alert.onDidDismiss();
+      const amountOrder = resp.data.values.amount_order;
+      console.log(resp.role);
+      console.log(+amountOrder);
+      if (resp.role === 'submit' && !isNaN(+amountOrder) && +amountOrder > 0) {
+        this.setHrefWebpay(service, amountOrder);
+      }
     },
   },
 };
