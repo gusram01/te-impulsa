@@ -163,8 +163,31 @@ export const newService = (service) => {
   Object.entries(service).forEach(([key, val]) => {
     params.append(key, val);
   });
+
   return axios
     .post(`${url}/newService`, params)
+    .then((resp) => {
+      console.log(resp);
+      if (!resp.data.success) {
+        throw new Error('Empty data');
+      }
+      return resp.data.data;
+    })
+    .catch((err) => {
+      console.error(err);
+      return [];
+    });
+};
+
+export const updateService = (service) => {
+  const params = new URLSearchParams();
+
+  Object.entries(service).forEach(([key, val]) => {
+    params.append(key, val);
+  });
+
+  return axios
+    .post(`${url}/updateService`, params)
     .then((resp) => {
       console.log(resp);
       if (!resp.data.success) {

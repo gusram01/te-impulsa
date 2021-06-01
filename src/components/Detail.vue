@@ -141,6 +141,7 @@ export default {
 
   data() {
     return {
+      toast: null,
       isDisabled: true,
       content: '',
       name: '',

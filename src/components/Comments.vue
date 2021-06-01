@@ -9,9 +9,9 @@
     >
     </ion-loading>
     <ion-list lines="none" v-if="comments.length > 0">
-      <ion-item v-for="(comment, index) in comments" :key="index">
+      <ion-item v-for="comment in comments" :key="comment.id_comments">
         <ion-icon :icon="readerOutline" slot="start"></ion-icon>
-        <ion-label>s</ion-label>
+        <ion-label>{{ comment.comment }}</ion-label>
       </ion-item>
     </ion-list>
 
