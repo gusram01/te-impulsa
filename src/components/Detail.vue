@@ -187,3 +187,26 @@ export default {
   },
 };
 </script>
+
+<style lang="css" scoped>
+ion-label {
+  min-width: 6em;
+}
+ion-input,
+ion-datetime {
+  --background: white;
+  --padding-top: 0.8em;
+  --padding-bottom: 0.8em;
+  --padding-start: 1.5em;
+  --padding-end: 1.5em;
+  width: 100%;
+  margin: 0.5em;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
+  border-radius: 10px;
+}
+
+.disabled {
+  color: var(--ion-color-step-50);
+  box-shadow: none;
+}
+</style>

@@ -10,14 +10,21 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <ion-tabs>
+      <ion-tabs class="">
         <ion-tab-bar slot="top">
-          <ion-tab-button tab="detail" :href="`/service/${$route.params.id}`">
+          <ion-tab-button
+            tab="detail"
+            layout="icon-hide"
+            :selected="!$route.path.includes('comments')"
+            :href="`/service/${$route.params.id}`"
+          >
             <ion-label>Details</ion-label>
           </ion-tab-button>
 
           <ion-tab-button
             tab="comments"
+            layout="icon-hide"
+            :selected="$route.path.includes('comments')"
             :href="`/service/${$route.params.id}/comments`"
           >
             <ion-label>Comments</ion-label>
@@ -55,16 +62,9 @@ export default {
     IonContent,
     IonLabel,
   },
-
-  created() {},
-
-  data() {
-    return {};
-  },
-
-  methods: {},
 };
 </script>
+
 <style scoped>
 ion-header {
   background: #e7e7e7;
@@ -72,26 +72,7 @@ ion-header {
 ion-toolbar {
   border-radius: 0 0 20px 20px;
 }
-ion-label {
-  min-width: 6em;
-}
-ion-input,
-ion-datetime {
-  --background: white;
-  --padding-top: 0.8em;
-  --padding-bottom: 0.8em;
-  --padding-start: 1.5em;
-  --padding-end: 1.5em;
-  width: 100%;
-  margin: 0.5em;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
-  border-radius: 10px;
-}
 
-.disabled {
-  color: var(--ion-color-step-50);
-  box-shadow: none;
-}
 .wrapper {
   --toolbar-height: 60;
   position: relative;
@@ -117,5 +98,12 @@ ion-content {
 
 .content__wrapper {
   background: var(--ion-color-step-900);
+}
+
+ion-tab-button {
+  --color: var(--ion-color-step-50);
+  --color-focused: var(--ion-color-tertiary);
+  --color-selected: var(--ion-color-tertiary);
+  font-size: 1.2em;
 }
 </style>

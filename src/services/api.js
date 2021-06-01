@@ -36,6 +36,7 @@ const postActionById = (orderCode, action) => {
     detail: 'serviceDetail',
     finish: 'finishService',
     delete: 'deleteService',
+    getComments: 'getComments',
   };
   params.append('order_code', orderCode);
 
@@ -72,6 +73,9 @@ export const finishServiceById = (orderCode) =>
 export const deleteServiceById = (orderCode) =>
   postActionById(orderCode, 'delete');
 
+export const getCommentsById = (orderCode) =>
+  postActionById(orderCode, 'getComments');
+
 export const getWebpayUrl = (orderCode, amountOrder) => {
   const params = new URLSearchParams();
 
@@ -96,6 +100,24 @@ export const getWebpayUrl = (orderCode, amountOrder) => {
         data: '',
         error,
       };
+    });
+};
+export const newComment = (orderCode, comment) => {
+  const params = new URLSearchParams();
+
+  params.append('order_code', orderCode);
+  params.append('comment', comment);
+
+  return axios
+    .post(`${url}/newComment`, params)
+    .then((resp) => {
+      if (!resp.data.success) {
+        throw new Error('Empty data');
+      }
+      return resp.data.data;
+    })
+    .catch((error) => {
+      throw new Error(error.message);
     });
 };
 

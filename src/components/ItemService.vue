@@ -177,6 +177,7 @@ export default {
       const alert = await alertController.create({
         cssClass: 'alert',
         header: 'Ingresa el monto de la orden',
+        backdropDismiss: false,
         inputs: [
           {
             name: 'amount_order',
