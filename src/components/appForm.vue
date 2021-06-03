@@ -1,100 +1,211 @@
 <template>
-  <ion-header translucent>
-    <ion-toolbar>
-      <ion-title>{{ title }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
   <ion-content class="ion-padding">
-    <ion-list lines="none">
-      <ion-item>
-        <ion-label>First name</ion-label>
-        <ion-input
-          type="text"
-          placeholder="First Name"
-          clear-input
-          @IonInput="updateValues($event, 'name')"
-        ></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Last Name</ion-label>
-        <ion-input
-          type="text"
-          placeholder="Last Name"
-          clear-input
-          @IonInput="updateValues($event, 'lastName')"
-        ></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Telephone</ion-label>
-        <ion-input
-          type="number"
-          placeholder="Telephone"
-          clear-input
-          @IonInput="updateValues($event, 'phone')"
-        ></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Date</ion-label>
-        <ion-datetime
-          display-format="MM/DD/YYYY"
-          @IonChange="updateValues($event, 'date_service')"
-        ></ion-datetime>
-      </ion-item>
-      <ion-item>
-        <ion-label>Direction</ion-label>
-        <ion-input
-          type="text"
-          placeholder="Direction"
-          clear-input
-          @IonInput="updateValues($event, 'address')"
-        ></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Department</ion-label>
-        <ion-input
-          type="text"
-          placeholder="Department"
-          clear-input
-          @IonInput="updateValues($event, 'department')"
-        ></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Comuna</ion-label>
-        <ion-select
-          placeholder="Comuna"
-          :interface-options="{ cssClass: 'my-custom-interface' }"
-          @IonChange="updateValues($event, 'comuna')"
-        >
-          <ion-select-option
-            class="comuna-option"
-            style="color: red"
-            v-for="val in comunas"
-            :key="val.id_comuna"
-            :value="val.id_comuna"
+    <v-form @submit="submit">
+      <ion-list lines="none">
+        <!--  First name: start  -->
+        <ion-item>
+          <ion-label>First name</ion-label>
+          <v-field
+            name="first-name"
+            v-slot="{ field }"
+            :rules="(val) => (val && val.length > 0) || 'Write your first name'"
           >
-            <ion-text color="danger">
-              {{ val.comuna_name }}
-            </ion-text>
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
+            <ion-input
+              clear-input
+              type="text"
+              v-bind="field"
+              name="first-name"
+              placeholder="First Name"
+              :disabled="isDisabled"
+              :value="modelValue.name"
+              @IonInput="updateValues($event, 'name')"
+            ></ion-input>
+          </v-field>
+          <v-error-message
+            class="input-error"
+            name="first-name"
+          ></v-error-message>
+        </ion-item>
+        <!--  First name: end  -->
 
-      <ion-grid>
-        <ion-row>
-          <ion-col> </ion-col>
-          <ion-col>
-            <ion-button type="cancel" @click="close" color="light">
-              Cancel
-            </ion-button>
-          </ion-col>
-          <ion-col>
-            <ion-button type="submit" @click="submit" color="tertiary">
-              Save
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-list>
+        <!--  Last name: start  -->
+        <ion-item>
+          <ion-label>Last Name</ion-label>
+          <v-field
+            name="last-name"
+            v-slot="{ field }"
+            :rules="(val) => (val && val.length > 0) || 'Write your last name'"
+          >
+            <ion-input
+              clear-input
+              type="text"
+              v-bind="field"
+              name="last-name"
+              placeholder="Last Name"
+              :disabled="isDisabled"
+              :value="modelValue.last_name"
+              @IonInput="updateValues($event, 'last_name')"
+            ></ion-input>
+          </v-field>
+          <v-error-message
+            class="input-error"
+            name="last-name"
+          ></v-error-message>
+        </ion-item>
+        <!--  Last name: end  -->
+
+        <!--  Telephone: start  -->
+        <ion-item>
+          <ion-label>Telephone</ion-label>
+          <v-field
+            name="telephone"
+            v-slot="{ field }"
+            :rules="
+              (val) =>
+                (val && val > 0 && ('' + val).length === 8) ||
+                'Write your phone 8 digits'
+            "
+          >
+            <ion-input
+              clear-input
+              type="number"
+              v-bind="field"
+              name="telephone"
+              placeholder="Telephone"
+              :disabled="isDisabled"
+              :value="modelValue.phone"
+              @IonInput="updateValues($event, 'phone')"
+            ></ion-input>
+          </v-field>
+          <v-error-message
+            class="input-error"
+            name="telephone"
+          ></v-error-message>
+        </ion-item>
+        <!--  Telephone: end  -->
+
+        <!--  Date: start  -->
+        <ion-item>
+          <ion-label>Date</ion-label>
+          <v-field
+            name="date"
+            v-slot="{ field }"
+            :rules="(val) => (val && val.length > 0) || 'Pick a date'"
+          >
+            <ion-datetime
+              name="date"
+              v-bind="field"
+              display-format="MM/DD/YYYY"
+              :disabled="isDisabled"
+              :value="modelValue.date_service"
+              @IonChange="updateValues($event, 'date_service')"
+            ></ion-datetime>
+          </v-field>
+          <v-error-message class="input-error" name="date"></v-error-message>
+        </ion-item>
+        <!--  Date: end  -->
+
+        <!--  Address: start  -->
+        <ion-item>
+          <ion-label>Direction</ion-label>
+
+          <v-field
+            name="address"
+            v-slot="{ field }"
+            :rules="(val) => (val && val.length > 0) || 'Write a direction'"
+          >
+            <ion-input
+              clear-input
+              type="text"
+              name="address"
+              v-bind="field"
+              placeholder="Direction"
+              :disabled="isDisabled"
+              :value="modelValue.address"
+              @IonInput="updateValues($event, 'address')"
+            ></ion-input>
+          </v-field>
+          <v-error-message class="input-error" name="address"></v-error-message>
+        </ion-item>
+        <!--  Address: end  -->
+
+        <!--  Department: start  -->
+        <ion-item>
+          <ion-label>Department</ion-label>
+          <v-field
+            name="department"
+            v-slot="{ field }"
+            :rules="(val) => (val && val.length > 0) || 'Write your department'"
+          >
+            <ion-input
+              clear-input
+              type="text"
+              v-bind="field"
+              name="department"
+              placeholder="Department"
+              :disabled="isDisabled"
+              :value="modelValue.department"
+              @IonInput="updateValues($event, 'department')"
+            ></ion-input>
+          </v-field>
+          <v-error-message
+            class="input-error"
+            name="department"
+          ></v-error-message>
+        </ion-item>
+        <!--  Department: end  -->
+
+        <!--  Comuna: start  -->
+        <ion-item>
+          <ion-label>Comuna</ion-label>
+          <v-field
+            name="comuna"
+            v-slot="{ field }"
+            :rules="(val) => (val && val > 0) || 'Pick a comuna'"
+          >
+            <ion-select
+              name="comuna"
+              v-bind="field"
+              placeholder="Comuna"
+              :disabled="isDisabled"
+              :value="modelValue.comuna"
+              :interface-options="{ cssClass: 'my-custom-interface' }"
+              @IonChange="updateValues($event, 'comuna')"
+            >
+              <ion-select-option
+                class="comuna-option"
+                style="color: red"
+                v-for="val in comunas"
+                :key="val.id_comuna"
+                :value="val.id_comuna"
+              >
+                <ion-text color="danger">
+                  {{ val.comuna_name }}
+                </ion-text>
+              </ion-select-option>
+            </ion-select>
+          </v-field>
+          <v-error-message class="input-error" name="comuna"></v-error-message>
+        </ion-item>
+        <!--  Comuna: end  -->
+
+        <ion-grid>
+          <ion-row>
+            <ion-col> </ion-col>
+            <ion-col v-if="close">
+              <ion-button type="button" @click="close" color="light">
+                Cancel
+              </ion-button>
+            </ion-col>
+            <ion-col v-if="!isDisabled">
+              <ion-button type="submit" @click="submit" color="tertiary">
+                Save
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-list>
+    </v-form>
   </ion-content>
 </template>
 
@@ -104,9 +215,6 @@ import {
   IonCol,
   IonRow,
   IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
   IonButton,
   IonInput,
   IonLabel,
@@ -116,9 +224,8 @@ import {
   IonSelectOption,
   IonDatetime,
   IonText,
-  toastController,
 } from '@ionic/vue';
-import { closeOutline } from 'ionicons/icons';
+import { Form, Field, ErrorMessage } from 'vee-validate';
 import { getComunas } from '../services/api';
 
 export default {
@@ -127,9 +234,6 @@ export default {
     IonCol,
     IonRow,
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     IonButton,
     IonInput,
     IonLabel,
@@ -139,165 +243,38 @@ export default {
     IonSelectOption,
     IonDatetime,
     IonText,
+    VForm: Form,
+    VField: Field,
+    VErrorMessage: ErrorMessage,
   },
   props: {
-    close: { type: Function, required: true },
+    close: { type: Function, required: false },
     submit: { type: Function, required: true },
-    form: {
+    modelValue: {
       type: Object,
-      default: () => ({
-        name: '',
-        lastName: '',
-        phone: '',
-        date_service: null,
-        address: '',
-        department: '',
-        comuna: '',
-      }),
+      required: true,
     },
+    isDisabled: { type: Boolean, default: false },
   },
 
   mounted() {
     getComunas().then((resp) => {
       this.comunas = resp;
     });
-    if (!this.form.name.length) {
-      this.errorInput.name.value = 'First name is required';
-    }
-
-    if (!this.form.lastName.length) {
-      this.errorInput.lastName.value = 'Last name is required';
-    }
-
-    if (+this.form.phone <= 0 || isNaN(+this.form.phone)) {
-      this.errorInput.phone.value = '9 characters Phone is required';
-    }
-
-    if (!this.form.date_service?.length) {
-      this.errorInput.date_service.value = 'Please pick a date';
-    }
-
-    if (!this.form.address.length) {
-      this.errorInput.address.value = 'Address is required';
-    }
-
-    if (!this.form.department.length) {
-      this.errorInput.department.value = 'Department is required';
-    }
-
-    if (+this.form.comuna <= 0 || isNaN(+this.form.comuna)) {
-      this.errorInput.comuna.value = 'Comuna is required';
-    }
   },
 
   data() {
     return {
-      closeOutline,
-      toast: null,
-
       comunas: [],
-
-      errorInput: {
-        name: {},
-        lastName: {},
-        phone: {},
-        date_service: {},
-        address: {},
-        department: {},
-        comuna: {},
-      },
     };
-  },
-
-  watch: {
-    form: {
-      deep: true,
-      handler: function(val) {
-        if (!val.name) {
-          this.errorInput.name.value = 'First name is required';
-          if (!this.errorInput.name.touched) {
-            this.errorInput.name.touched = true;
-          }
-        } else {
-          delete this.errorInput.name.value;
-        }
-
-        if (!val.lastName) {
-          this.errorInput.lastName.value = 'Last name is required';
-          if (!this.errorInput.lastName.touched) {
-            this.errorInput.lastName.touched = true;
-          }
-        } else {
-          delete this.errorInput.lastName.value;
-        }
-
-        if (!val.phone || isNaN(+val.phone) || (val.phone + '').length !== 8) {
-          this.errorInput.phone.value = '8 characters Phone is required';
-          if (!this.errorInput.phone.touched) {
-            this.errorInput.phone.touched = true;
-          }
-        } else {
-          delete this.errorInput.phone.value;
-        }
-
-        if (!val.date_service) {
-          this.errorInput.date_service.value = 'Please pick a date';
-          if (!this.errorInput.date_service.touched) {
-            this.errorInput.date_service.touched = true;
-          }
-        } else {
-          delete this.errorInput.date_service.value;
-        }
-
-        if (!val.address) {
-          this.errorInput.address.value = 'Address is required';
-          if (!this.errorInput.address.touched) {
-            this.errorInput.address.touched = true;
-          }
-        } else {
-          delete this.errorInput.address.value;
-        }
-
-        if (!val.department) {
-          this.errorInput.department.value = 'Department is required';
-          if (!this.errorInput.department.touched) {
-            this.errorInput.department.touched = true;
-          }
-        } else {
-          delete this.errorInput.department.value;
-        }
-
-        if (!val.comuna || isNaN(+val.comuna)) {
-          this.errorInput.comuna.value = 'Comuna is required';
-          if (!this.errorInput.comuna.touched) {
-            this.errorInput.comuna.touched = true;
-          }
-        } else {
-          delete this.errorInput.comuna.value;
-        }
-      },
-    },
   },
 
   methods: {
     updateValues(event, key) {
       this.$emit('update:modelValue', {
         key,
-        value: event,
+        value: event.target.value,
       });
-    },
-
-    hasErrorForm() {
-      return !!Object.values(this.errorInput)
-        .map((val) => val.value)
-        .join('')
-        .trim().length;
-    },
-
-    getErrorMessages() {
-      return Object.values(this.errorInput)
-        .map((val) => val.value)
-        .join(', ');
     },
   },
 };
@@ -321,5 +298,10 @@ ion-datetime {
 ion-select {
   --placeholder-color: var(--ion-color-tertiary);
   --placeholder-opacity: 1;
+}
+.input-error {
+  max-width: 10ch;
+  font-size: 0.75em;
+  color: var(--ion-color-danger);
 }
 </style>

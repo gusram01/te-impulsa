@@ -10,7 +10,7 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <ion-tabs class="">
+      <ion-tabs>
         <ion-tab-bar slot="top">
           <ion-tab-button
             tab="detail"
