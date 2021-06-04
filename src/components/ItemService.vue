@@ -161,7 +161,6 @@ export default {
           if (resp.ok) {
             const anchor = document.createElement('a');
             anchor.href = `https://wa.me/5619${service.telephone}?text=https://teimpulsamos.cl/tokenpay/${resp.data.token}`;
-            console.log(anchor);
             anchor.className = 'hidden';
             anchor.click();
             anchor.remove();

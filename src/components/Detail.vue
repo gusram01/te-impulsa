@@ -7,7 +7,7 @@
           <ion-button
             :color="isDisabled ? 'tertiary' : 'dark'"
             size="default"
-            @click="isDisabled = !isDisabled"
+            @click="disableInputs"
           >
             {{ isDisabled ? 'Edit' : 'Cancel' }}
           </ion-button>
@@ -89,6 +89,10 @@ export default {
   },
 
   methods: {
+    disableInputs() {
+      this.isDisabled = !this.isDisabled;
+    },
+
     async showSuccessToast() {
       this.toast = await toastController.create({
         message: 'The service was updated',

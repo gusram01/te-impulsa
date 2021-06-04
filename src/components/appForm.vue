@@ -11,7 +11,6 @@
             :rules="(val) => (val && val.length > 0) || 'Write your first name'"
           >
             <ion-input
-              clear-input
               type="text"
               v-bind="field"
               name="first-name"
@@ -37,7 +36,6 @@
             :rules="(val) => (val && val.length > 0) || 'Write your last name'"
           >
             <ion-input
-              clear-input
               type="text"
               v-bind="field"
               name="last-name"
@@ -67,7 +65,6 @@
             "
           >
             <ion-input
-              clear-input
               type="number"
               v-bind="field"
               name="telephone"
@@ -115,7 +112,6 @@
             :rules="(val) => (val && val.length > 0) || 'Write a direction'"
           >
             <ion-input
-              clear-input
               type="text"
               name="address"
               v-bind="field"
@@ -138,7 +134,6 @@
             :rules="(val) => (val && val.length > 0) || 'Write your department'"
           >
             <ion-input
-              clear-input
               type="text"
               v-bind="field"
               name="department"
@@ -271,6 +266,7 @@ export default {
 
   methods: {
     updateValues(event, key) {
+      console.log(event);
       this.$emit('update:modelValue', {
         key,
         value: event.target.value,

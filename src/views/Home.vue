@@ -79,6 +79,7 @@
           </ion-item-group>
         </ion-list>
       </div>
+      <SendUrlButton />
     </template>
   </app-layout>
 </template>
@@ -106,6 +107,7 @@ import { getInfo, finishServiceById, deleteServiceById } from '../services/api';
 
 import ModalForm from '../components/ModalForm.vue';
 import AppServices from '../components/ItemService.vue';
+import SendUrlButton from '../components/SendUrlButton.vue';
 
 import emptyImage from '../assets/145.png';
 
@@ -124,6 +126,7 @@ export default {
     IonImg,
     IonText,
     AppServices,
+    SendUrlButton,
   },
   data() {
     return {
