@@ -167,7 +167,6 @@ export const newService = (service) => {
   return axios
     .post(`${url}/newService`, params)
     .then((resp) => {
-      console.log(resp);
       if (!resp.data.success) {
         throw new Error('Empty data');
       }
@@ -189,7 +188,6 @@ export const updateService = (service) => {
   return axios
     .post(`${url}/updateService`, params)
     .then((resp) => {
-      console.log(resp);
       if (!resp.data.success) {
         throw new Error('Empty data');
       }

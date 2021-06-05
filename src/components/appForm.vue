@@ -187,13 +187,18 @@
         <ion-grid>
           <ion-row>
             <ion-col> </ion-col>
-            <ion-col v-if="close">
-              <ion-button type="button" @click="close" color="light">
+            <ion-col>
+              <ion-button
+                type="button"
+                @click="close"
+                color="light"
+                v-if="close"
+              >
                 Cancel
               </ion-button>
             </ion-col>
-            <ion-col v-if="!isDisabled">
-              <ion-button type="submit" @click="submit" color="tertiary">
+            <ion-col>
+              <ion-button type="submit" color="tertiary" v-if="!isDisabled">
                 Save
               </ion-button>
             </ion-col>
@@ -266,7 +271,6 @@ export default {
 
   methods: {
     updateValues(event, key) {
-      console.log(event);
       this.$emit('update:modelValue', {
         key,
         value: event.target.value,

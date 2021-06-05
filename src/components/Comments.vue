@@ -11,6 +11,7 @@
     <ion-list lines="none" v-if="comments.length > 0">
       <ion-item v-for="comment in comments" :key="comment.id_comments">
         <ion-icon :icon="readerOutline" slot="start"></ion-icon>
+        <ion-text slot="start"> {{ comment.id_comments }} </ion-text>
         <ion-label>{{ comment.comment }}</ion-label>
       </ion-item>
     </ion-list>
@@ -96,7 +97,8 @@ export default {
   methods: {
     getComments() {
       getCommentsById(this.$route.params.id).then((response) => {
-        this.comments = response;
+        console.log(response);
+        this.comments = response.data;
       });
     },
 
@@ -118,11 +120,12 @@ export default {
           {
             text: 'Cancel',
             role: 'cancel',
-            cssClass: 'secondary',
+            cssClass: 'button-grey',
           },
           {
             text: 'Send comment',
             role: 'submit',
+            cssClass: 'button-primary',
             handler: () => (this.isLoaderActive = true),
           },
         ],

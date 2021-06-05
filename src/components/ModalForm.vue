@@ -105,8 +105,7 @@ export default {
       this.comuna = '';
     },
 
-    submitForm(e) {
-      e.preventDefault();
+    submitForm() {
       const service = {
         name: this.name,
         last_name: this.last_name,

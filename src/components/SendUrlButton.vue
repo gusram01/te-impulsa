@@ -1,6 +1,6 @@
 <template>
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button color="dark" @click="presentAlertPrompt">
+    <ion-fab-button color="light" @click="presentAlertPrompt">
       <ion-icon :icon="sendOutline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
@@ -41,11 +41,12 @@ export default {
           {
             text: 'Cancel',
             role: 'cancel',
-            cssClass: 'secondary',
+            cssClass: 'button-grey',
           },
           {
             text: 'Send Message',
             role: 'submit',
+            cssClass: 'button-primary',
           },
         ],
       });

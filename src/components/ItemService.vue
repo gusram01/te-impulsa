@@ -177,6 +177,7 @@ export default {
         cssClass: 'alert',
         header: 'Ingresa el monto de la orden',
         backdropDismiss: false,
+        animated: true,
         inputs: [
           {
             name: 'amount_order',
@@ -189,11 +190,12 @@ export default {
           {
             text: 'Cancel',
             role: 'cancel',
-            cssClass: 'secondary',
+            cssClass: 'button-grey',
           },
           {
             text: 'Send Message',
             role: 'submit',
+            cssClass: 'button-primary',
             handler: () => (this.isLoaderActive = true),
           },
         ],

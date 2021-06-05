@@ -63,7 +63,7 @@
         </ion-row>
       </ion-grid>
 
-      <div class="content__wrapper" v-else>
+      <div class="content__wrapper " v-else>
         <ion-list lines="none" :inset="false">
           <ion-item-group
             v-for="(services, index) in datedServices"
@@ -270,6 +270,7 @@ ion-button.add {
 
 ion-list {
   padding-top: 0;
+  padding-bottom: 15%;
   background: var(--ion-color-step-900);
 }
 
@@ -296,6 +297,7 @@ ion-item-group > ion-datetime {
   flex-direction: column;
   width: 100%;
   height: 100%;
+
   background: var(--ion-color-step-900);
 }
 
