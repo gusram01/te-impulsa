@@ -123,20 +123,23 @@ export default {
 
     submitForm() {
       const service = {
-        name: this.name,
+        first_name: this.name,
         last_name: this.last_name,
-        phone: this.phone,
-        date_service: DateTime.fromISO(this.date_service).toFormat(
+        telephone: this.phone,
+        sched_date: DateTime.fromISO(this.date_service).toFormat(
           'yyyy-LL-dd HH:mm:ss'
         ),
-        address: this.address,
-        department: this.department,
+        direction: this.address,
+        depto: this.department,
         comuna: this.comuna,
         token_business: '841f80d3-7f4c-11eb-b629-f603cfed5859',
       };
 
       if (this.isValidForm) {
-        updateService(service).then(() => {
+        updateService({
+          ...service,
+          order_code: this.$route.params.id || null,
+        }).then(() => {
           this.showSuccessToast();
           this.updateCurrentService();
           this.isDisabled = true;

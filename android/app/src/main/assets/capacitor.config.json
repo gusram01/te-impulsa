@@ -1,19 +1,19 @@
 {
-	"appId": "com.dev.teimpulsa",
-	"appName": "te-impulsa",
-	"bundledWebRuntime": false,
-	"npmClient": "npm",
-	"webDir": "dist",
-	"plugins": {
-		"SplashScreen": {
-			"launchShowDuration": 0
-		},
-		"DatePickerPlugin": {
-			"mode": "date",
-			"locale": "es_CL",
-			"format": "dd/MM/yyyy"
-		}
-	},
-	"linuxAndroidStudioPath": "/usr/local/android-studio/bin/studio.sh",
-	"cordova": {}
+  "appId": "com.dev.teimpulsa",
+  "appName": "te-impulsa",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    },
+    "DatePickerPlugin": {
+      "mode": "date",
+      "locale": "es_CL",
+      "format": "dd/MM/yyyy"
+    }
+  },
+  "linuxAndroidStudioPath": "/usr/local/android-studio/bin/studio.sh",
+  "cordova": {}
 }
